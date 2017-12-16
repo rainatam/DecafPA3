@@ -11,6 +11,7 @@ import decaf.symbol.Variable;
 import decaf.tac.Label;
 import decaf.tac.Temp;
 import decaf.type.BaseType;
+import decaf.type.ClassType;
 
 public class TransPass2 extends Tree.Visitor {
 
@@ -302,6 +303,32 @@ public class TransPass2 extends Tree.Visitor {
 	public void visitSuperExpr(Tree.SuperExpr superExpr) {
 		Temp parent = tr.genLoad(currentThis, 0);
 		superExpr.val = parent;
+	}
+
+	@Override
+	public void visitSCopyExpr(Tree.SCopyExpr sCopyExpr) {
+		sCopyExpr.expr.accept(this);
+		int w = ((ClassType)(sCopyExpr.expr.type)).getSymbol().getSize();
+		Temp width = tr.genLoadImm4(w);
+		tr.genParm(width);
+		Temp dstAddr = tr.genIntrinsicCall(Intrinsic.ALLOCATE);
+		Label loop = Label.createLabel();
+		Temp four =  tr.genLoadImm4(4);
+		Temp offset = tr.genLoadImm4(0);
+		Temp srcAddr = Temp.createTempI4();
+		tr.genAssign(srcAddr, sCopyExpr.expr.val);
+		sCopyExpr.val = srcAddr;
+
+		tr.genMark(loop);
+
+		Temp temp = tr.genLoad(srcAddr, 0);
+		tr.genStore(temp, dstAddr, 0);
+		tr.genAssign(offset, tr.genAdd(offset, four));
+		tr.genAssign(dstAddr, tr.genAdd(dstAddr, four));
+		tr.genAssign(srcAddr, tr.genAdd(srcAddr, four));
+		tr.genAssign(temp, tr.genSub(width, offset));
+
+		tr.genBnez(temp, loop);
 	}
 
 	@Override
