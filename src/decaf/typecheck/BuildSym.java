@@ -119,8 +119,7 @@ public class BuildSym extends Tree.Visitor {
 			if (table.getCurrentScope().equals(sym.getScope())) {
 				issueError(new DeclConflictError(v.getLocation(), v.getName(),
 						sym.getLocation()));
-			} else if ((sym.getScope().isFormalScope() || sym.getScope()
-					.isLocalScope())) {
+			} else if ((sym.getScope().isFormalScope() && table.getCurrentScope().isLocalScope() && ((LocalScope)table.getCurrentScope()).isCombinedtoFormal() )) {
 				issueError(new DeclConflictError(v.getLocation(), v.getName(),
 						sym.getLocation()));
 			} else {
@@ -150,7 +149,14 @@ public class BuildSym extends Tree.Visitor {
 			d.accept(this);
 			f.appendParam(d.symbol);
 		}
-		funcDef.body.accept(this);
+
+		funcDef.body.associatedScope = new LocalScope(funcDef.body);
+		funcDef.body.associatedScope.setCombinedtoFormal(true);
+		table.open(funcDef.body.associatedScope);
+		for (Tree s : funcDef.body.block) {
+			s.accept(this);
+		}
+		table.close();
 		table.close();
 	}
 
@@ -158,17 +164,20 @@ public class BuildSym extends Tree.Visitor {
 	@Override
 	public void visitTypeIdent(Tree.TypeIdent type) {
 		switch (type.typeTag) {
-		case Tree.VOID:
-			type.type = BaseType.VOID;
-			break;
-		case Tree.INT:
-			type.type = BaseType.INT;
-			break;
-		case Tree.BOOL:
-			type.type = BaseType.BOOL;
-			break;
-		default:
-			type.type = BaseType.STRING;
+			case Tree.VOID:
+				type.type = BaseType.VOID;
+				break;
+			case Tree.INT:
+				type.type = BaseType.INT;
+				break;
+			case Tree.BOOL:
+				type.type = BaseType.BOOL;
+				break;
+			case Tree.COMPLEX:
+				type.type = BaseType.COMPLEX;
+				break;
+			default:
+				type.type = BaseType.STRING;
 		}
 	}
 
@@ -202,6 +211,8 @@ public class BuildSym extends Tree.Visitor {
 	@Override
 	public void visitBlock(Tree.Block block) {
 		block.associatedScope = new LocalScope(block);
+		//System.out.println(block.associatedScope.getKind().toString());
+		//System.out.println(block.getLocation());
 		table.open(block.associatedScope);
 		for (Tree s : block.block) {
 			s.accept(this);
@@ -232,6 +243,29 @@ public class BuildSym extends Tree.Visitor {
 			whileLoop.loopBody.accept(this);
 		}
 	}
+
+	@Override
+	public void visitDo(Tree.Do doLoop) {
+		//System.out.println("Do"+doLoop.getLocation());
+		for(Tree branch : doLoop.branches) {
+			branch.accept(this);
+		}
+		doLoop.sub.accept(this);
+	}
+
+	@Override
+	public void visitDoBranch(Tree.DoBranch doBranch) {
+		doBranch.sub.accept(this);
+	}
+
+	@Override
+    public void visitDoSub(Tree.DoSub doSub) {
+		//System.out.println("DoSub"+doSub.getLocation());
+	    if (doSub.stmt != null) {
+	        doSub.stmt.accept(this);
+        }
+
+    }
 
 	private int calcOrder(Class c) {
 		if (c == null) {

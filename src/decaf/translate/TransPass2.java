@@ -1,5 +1,7 @@
 package decaf.translate;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 import decaf.tree.Tree;
@@ -297,6 +299,12 @@ public class TransPass2 extends Tree.Visitor {
 	}
 
 	@Override
+	public void visitSuperExpr(Tree.SuperExpr superExpr) {
+		Temp parent = tr.genLoad(currentThis, 0);
+		superExpr.val = parent;
+	}
+
+	@Override
 	public void visitForLoop(Tree.ForLoop forLoop) {
 		if (forLoop.init != null) {
 			forLoop.init.accept(this);
@@ -342,6 +350,69 @@ public class TransPass2 extends Tree.Visitor {
 			tr.genMark(exit);
 		}
 	}
+
+	@Override
+	public void visitCase(Tree.Case caseExpr) {
+		caseExpr.expr.accept(this);
+		Label exit = Label.createLabel();
+		List<Label> labelList = new ArrayList<>();
+		caseExpr.val = Temp.createTempI4();
+		for (Tree.Expr aCaseExpr : caseExpr.aExprs) {
+			((Tree.ACaseExpr)aCaseExpr).left.accept(this);
+			Temp val = tr.genSub(caseExpr.expr.val, ((Tree.ACaseExpr)aCaseExpr).left.val);
+			Label caseLabel = Label.createLabel();
+			labelList.add(caseLabel);
+			tr.genBeqz(val, caseLabel);
+		}
+		for (int i = 0; i < caseExpr.aExprs.size(); i++) {
+			tr.genMark(labelList.get(i));
+			((Tree.ACaseExpr)caseExpr.aExprs.get(i)).right.accept(this);
+			tr.genAssign(caseExpr.val, ((Tree.ACaseExpr) caseExpr.aExprs.get(i)).right.val);
+			tr.genBranch(exit);
+		}
+		Label defaultLabel = Label.createLabel();
+		tr.genMark(defaultLabel);
+		caseExpr.dExpr.accept(this);
+		tr.genAssign(caseExpr.val, caseExpr.dExpr.val);
+		tr.genMark(exit);
+
+	}
+
+	@Override
+	public void visitDefaultExpr(Tree.DefaultExpr defaultExpr) {
+		defaultExpr.expr.accept(this);
+		defaultExpr.val = defaultExpr.expr.val;
+	}
+
+	@Override
+	public void visitDo(Tree.Do doStmt) {
+		Label start = Label.createLabel();
+		tr.genMark(start);
+
+		Label exit = Label.createLabel();
+		loopExits.push(exit);
+
+		for (Tree branch : doStmt.branches) {
+			Tree.DoSub doSub = (Tree.DoSub)((Tree.DoBranch) branch).sub;
+			doSub.expr.accept(this);
+			Label next = Label.createLabel();
+			tr.genBeqz(doSub.expr.val, next);
+			((Tree.DoSub) ((Tree.DoBranch) branch).sub).stmt.accept(this);
+			tr.genBranch(start);
+			tr.genMark(next);
+		}
+		Tree.DoSub doSub = (Tree.DoSub) doStmt.sub;
+		doSub.expr.accept(this);
+		Label next = Label.createLabel();
+		tr.genBeqz(doSub.expr.val, next);
+		doSub.stmt.accept(this);
+		tr.genBranch(start);
+		tr.genMark(next);
+
+		loopExits.pop();
+		tr.genMark(exit);
+	}
+
 
 	@Override
 	public void visitNewArray(Tree.NewArray newArray) {

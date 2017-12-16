@@ -40,6 +40,7 @@
 	</condition>
 
 	<target name="prepare" description="Preparing...">
+		<delete dir="${result.dir}" />
 		<mkdir dir="${bin.dir}" />
 		<mkdir dir="${doc.dir}" />
 	</target>

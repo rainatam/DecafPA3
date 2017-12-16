@@ -3,34 +3,12 @@ package decaf.typecheck;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
+import java.util.HashSet;
 
 import decaf.Driver;
 import decaf.Location;
+import decaf.error.*;
 import decaf.tree.Tree;
-import decaf.error.BadArgCountError;
-import decaf.error.BadArgTypeError;
-import decaf.error.BadArrElementError;
-import decaf.error.BadLengthArgError;
-import decaf.error.BadLengthError;
-import decaf.error.BadNewArrayLength;
-import decaf.error.BadPrintArgError;
-import decaf.error.BadReturnTypeError;
-import decaf.error.BadTestExpr;
-import decaf.error.BreakOutOfLoopError;
-import decaf.error.ClassNotFoundError;
-import decaf.error.DecafError;
-import decaf.error.FieldNotAccessError;
-import decaf.error.FieldNotFoundError;
-import decaf.error.IncompatBinOpError;
-import decaf.error.IncompatUnOpError;
-import decaf.error.NotArrayError;
-import decaf.error.NotClassError;
-import decaf.error.NotClassFieldError;
-import decaf.error.NotClassMethodError;
-import decaf.error.RefNonStaticError;
-import decaf.error.SubNotIntError;
-import decaf.error.ThisInStaticFuncError;
-import decaf.error.UndeclVarError;
 import decaf.frontend.Parser;
 import decaf.scope.ClassScope;
 import decaf.scope.FormalScope;
@@ -68,6 +46,10 @@ public class TypeCheck extends Tree.Visitor {
 	@Override
 	public void visitUnary(Tree.Unary expr) {
 		expr.expr.accept(this);
+		if(expr.expr.type.equal(BaseType.ERROR)) {
+		    expr.type = BaseType.ERROR;
+		    return;
+        }
 		if(expr.tag == Tree.NEG){
 			if (expr.expr.type.equal(BaseType.ERROR)
 					|| expr.expr.type.equal(BaseType.INT)) {
@@ -77,29 +59,46 @@ public class TypeCheck extends Tree.Visitor {
 						expr.expr.type.toString()));
 				expr.type = BaseType.ERROR;
 			}
-		}
-		else{
+		} else if(expr.tag == Tree.NOT){
 			if (!(expr.expr.type.equal(BaseType.BOOL) || expr.expr.type
 					.equal(BaseType.ERROR))) {
 				issueError(new IncompatUnOpError(expr.getLocation(), "!",
 						expr.expr.type.toString()));
 			}
 			expr.type = BaseType.BOOL;
-		}
+		} else if(expr.tag == Tree.RE) {
+		    if (!(expr.expr.type.equal(BaseType.COMPLEX) || expr.expr.type.equal(BaseType.ERROR))) {
+		        issueError(new IncompatUnOpError(expr.getLocation(), "@", expr.expr.type.toString()));
+            }
+            expr.type = BaseType.INT;
+        } else if(expr.tag == Tree.IM) {
+            if (!(expr.expr.type.equal(BaseType.COMPLEX) || expr.expr.type.equal(BaseType.ERROR))) {
+                issueError(new IncompatUnOpError(expr.getLocation(), "$", expr.expr.type.toString()));
+            }
+            expr.type = BaseType.INT;
+        } else if(expr.tag == Tree.COMPCAST) {
+            if (!(expr.expr.type.equal(BaseType.INT) || expr.expr.type.equal(BaseType.ERROR))) {
+                issueError(new IncompatUnOpError(expr.getLocation(), "#", expr.expr.type.toString()));
+            }
+            expr.type = BaseType.COMPLEX;
+        }
 	}
 
 	@Override
 	public void visitLiteral(Tree.Literal literal) {
 		switch (literal.typeTag) {
-		case Tree.INT:
-			literal.type = BaseType.INT;
-			break;
-		case Tree.BOOL:
-			literal.type = BaseType.BOOL;
-			break;
-		case Tree.STRING:
-			literal.type = BaseType.STRING;
-			break;
+            case Tree.INT:
+                literal.type = BaseType.INT;
+                break;
+            case Tree.BOOL:
+                literal.type = BaseType.BOOL;
+                break;
+            case Tree.COMPLEX:
+                literal.type = BaseType.COMPLEX;
+                break;
+            case Tree.STRING:
+                literal.type = BaseType.STRING;
+                break;
 		}
 	}
 
@@ -144,8 +143,17 @@ public class TypeCheck extends Tree.Visitor {
 					callExpr.method, receiverType.toString()));
 			callExpr.type = BaseType.ERROR;
 		} else if (!f.isFunction()) {
-			issueError(new NotClassMethodError(callExpr.getLocation(),
-					callExpr.method, receiverType.toString()));
+			/*
+		    if(callExpr.receiver.tag == Tree.SUPEREXPR) {
+		        // no function exists
+                Class parent = ((ClassScope) table.lookForScope(Scope.Kind.CLASS)).getOwner().getParent();
+                issueError(new NotClassMethodError(callExpr.getLocation(),
+                        callExpr.method, parent.getType().toString()));
+            } else {
+            */
+                issueError(new NotClassMethodError(callExpr.getLocation(),
+                        callExpr.method, receiverType.toString()));
+
 			callExpr.type = BaseType.ERROR;
 		} else {
 			Function func = (Function) f;
@@ -211,6 +219,36 @@ public class TypeCheck extends Tree.Visitor {
 			callExpr.type = BaseType.ERROR;
 			return;
 		}
+
+		if (callExpr.receiver.tag == Tree.SUPEREXPR) {
+            //Class parent = ((ClassScope) table.lookForScope(Scope.Kind.CLASS)).getOwner().getParent();
+			ClassScope cs = ((ClassType) callExpr.receiver.type).getClassScope();
+			ClassScope parent = cs.getParentScope();
+            if (parent == null) {
+                // no parent
+                issueError(new NoParentClassError(callExpr.getLocation(), callExpr.receiver.type.toString()));
+                callExpr.type = BaseType.ERROR;
+                return;
+            }
+            Symbol func = parent.lookupVisible(callExpr.method);
+            while(func == null && parent.getParentScope() != null) {
+            	parent = parent.getParentScope();
+            	func = parent.lookupVisible(callExpr.method);
+			}
+			if (func == null) {
+				issueError(new FieldNotFoundError(callExpr.getLocation(),
+                            callExpr.method, parent.getOwner().getType().toString()));
+                    callExpr.type = BaseType.ERROR;
+                    return;
+            }
+			else if(!func.isFunction()) {
+				issueError(new NotClassMethodError(callExpr.getLocation(),
+						callExpr.method, parent.getOwner().getType().toString()));
+				callExpr.type = BaseType.ERROR;
+				return;
+			}
+        }
+
 		if (callExpr.method.equals("length")) {
 			if (callExpr.receiver.type.isArrayType()) {
 				if (callExpr.actuals.size() > 0) {
@@ -289,6 +327,43 @@ public class TypeCheck extends Tree.Visitor {
 	}
 
 	@Override
+    public void visitSuperExpr(Tree.SuperExpr superExpr) {
+	    if (currentFunction.isStatik()) {
+	        // static
+            issueError(new SuperInStaticFuncError(superExpr.getLocation()));
+            superExpr.type = BaseType.ERROR;
+        } else {
+	        superExpr.type = ((ClassScope) table.lookForScope(Scope.Kind.CLASS)).getOwner().getType();
+        }
+    }
+
+    @Override
+    public void visitSCopyExpr(Tree.SCopyExpr scopyExpr) {
+	    scopyExpr.expr.accept(this);
+	    if(scopyExpr.expr.type.equal(BaseType.ERROR)) {
+	        scopyExpr.type = BaseType.ERROR;
+        } else if(!scopyExpr.expr.type.isClassType()) {
+            issueError(new CopyTypeError(scopyExpr.getLocation(), scopyExpr.expr.type.toString()));
+	        scopyExpr.type = BaseType.ERROR;
+        } else {
+	        scopyExpr.type = scopyExpr.expr.type;
+        }
+    }
+
+    @Override
+    public void visitDCopyExpr(Tree.DCopyExpr scopyExpr) {
+        scopyExpr.expr.accept(this);
+        if(scopyExpr.expr.type.equal(BaseType.ERROR)) {
+            scopyExpr.type = BaseType.ERROR;
+        } else if(!scopyExpr.expr.type.isClassType()) {
+            issueError(new CopyTypeError(scopyExpr.getLocation(), scopyExpr.expr.type.toString()));
+            scopyExpr.type = BaseType.ERROR;
+        } else {
+            scopyExpr.type = scopyExpr.expr.type;
+        }
+    }
+
+	@Override
 	public void visitTypeTest(Tree.TypeTest instanceofExpr) {
 		instanceofExpr.instance.accept(this);
 		if (!instanceofExpr.instance.type.isClassType()) {
@@ -349,6 +424,8 @@ public class TypeCheck extends Tree.Visitor {
 					ident.lvKind = Tree.LValue.Kind.MEMBER_VAR;
 				}
 			} else {
+
+
 				ident.type = v.getType();
 				if (v.isClass()) {
 					if (ident.usedForRef) {
@@ -364,7 +441,15 @@ public class TypeCheck extends Tree.Visitor {
 		} else {
 			ident.owner.usedForRef = true;
 			ident.owner.accept(this);
+
 			if (!ident.owner.type.equal(BaseType.ERROR)) {
+
+                if (ident.owner.tag == Tree.SUPEREXPR) {
+                    issueError(new SuperMemberVarError(ident.getLocation()));
+                    ident.type = BaseType.ERROR;
+                    return;
+                }
+
 				if (ident.owner.isClass || !ident.owner.type.isClassType()) {
 					issueError(new NotClassFieldError(ident.getLocation(),
 							ident.name, ident.owner.type.toString()));
@@ -439,6 +524,16 @@ public class TypeCheck extends Tree.Visitor {
 	public void visitAssign(Tree.Assign assign) {
 		assign.left.accept(this);
 		assign.expr.accept(this);
+        if (assign.expr.tag == Tree.SCOPYEXPR || assign.expr.tag == Tree.DCOPYEXPR) {
+
+            if (!assign.left.type.equal(BaseType.ERROR) && !assign.expr.type.equal(BaseType.ERROR) &&
+                    !assign.left.type.equal(assign.expr.type))
+                issueError(new CopySrcDstNotSameError(assign.getLocation(), assign.expr.type.toString(), assign.left.type.toString()));
+            return;
+        }
+        //System.out.println(assign.getLocation());
+        //System.out.println(assign.left.type.toString());
+        //System.out.println(assign.expr.type.toString());
 		if (!assign.left.type.equal(BaseType.ERROR)
 				&& (assign.left.type.isFuncType() || !assign.expr.type
 						.compatible(assign.left.type))) {
@@ -497,6 +592,19 @@ public class TypeCheck extends Tree.Visitor {
 		}
 	}
 
+    @Override
+    public void visitPrintComp(Tree.PrintComp printCompStmt) {
+        int i = 0;
+        for (Tree.Expr e : printCompStmt.exprs) {
+            e.accept(this);
+            i++;
+            if (!e.type.equal(BaseType.ERROR) && !e.type.equal(BaseType.COMPLEX)) {
+                issueError(new BadPrintCompArgError(e.getLocation(), Integer
+                        .toString(i), e.type.toString()));
+            }
+        }
+    }
+
 	@Override
 	public void visitReturn(Tree.Return returnStmt) {
 		Type returnType = ((FormalScope) table
@@ -533,17 +641,20 @@ public class TypeCheck extends Tree.Visitor {
 	@Override
 	public void visitTypeIdent(Tree.TypeIdent type) {
 		switch (type.typeTag) {
-		case Tree.VOID:
-			type.type = BaseType.VOID;
-			break;
-		case Tree.INT:
-			type.type = BaseType.INT;
-			break;
-		case Tree.BOOL:
-			type.type = BaseType.BOOL;
-			break;
-		default:
-			type.type = BaseType.STRING;
+            case Tree.VOID:
+                type.type = BaseType.VOID;
+                break;
+            case Tree.INT:
+                type.type = BaseType.INT;
+                break;
+            case Tree.BOOL:
+                type.type = BaseType.BOOL;
+                break;
+            case Tree.COMPLEX:
+                type.type = BaseType.COMPLEX;
+                break;
+            default:
+                type.type = BaseType.STRING;
 		}
 	}
 
@@ -579,7 +690,9 @@ public class TypeCheck extends Tree.Visitor {
 	private Type checkBinaryOp(Tree.Expr left, Tree.Expr right, int op, Location location) {
 		left.accept(this);
 		right.accept(this);
-
+        if(left.type.equal(BaseType.ERROR) || right.type.equal(BaseType.ERROR)) {
+            return BaseType.ERROR;
+        }
 		if (left.type.equal(BaseType.ERROR) || right.type.equal(BaseType.ERROR)) {
 			switch (op) {
 			case Tree.PLUS:
@@ -598,8 +711,21 @@ public class TypeCheck extends Tree.Visitor {
 		Type returnType = BaseType.ERROR;
 		switch (op) {
 		case Tree.PLUS:
-		case Tree.MINUS:
 		case Tree.MUL:
+            compatible = (left.type.equals(BaseType.INT) && left.type.equal(right.type)) ||
+                    (left.type.equals(BaseType.COMPLEX) && left.type.equal(right.type)) ||
+                    (left.type.equals(BaseType.INT) && right.type.equals(BaseType.COMPLEX)) ||
+                    (left.type.equals(BaseType.COMPLEX) && right.type.equals(BaseType.INT));
+            if(left.type.equals(BaseType.COMPLEX)) {
+                if(compatible) right.type = BaseType.COMPLEX;
+                returnType = BaseType.COMPLEX;
+            } else if(right.type.equals(BaseType.COMPLEX)) {
+                if(compatible) left.type = BaseType.COMPLEX;
+                returnType = BaseType.COMPLEX;
+            }
+            else  returnType = left.type;
+            break;
+		case Tree.MINUS:
 		case Tree.DIV:
 			compatible = left.type.equals(BaseType.INT)
 					&& left.type.equal(right.type);
@@ -637,6 +763,7 @@ public class TypeCheck extends Tree.Visitor {
 		if (!compatible) {
 			issueError(new IncompatBinOpError(location, left.type.toString(),
 					Parser.opStr(op), right.type.toString()));
+			return BaseType.ERROR;
 		}
 		return returnType;
 	}
@@ -648,4 +775,84 @@ public class TypeCheck extends Tree.Visitor {
 		}
 	}
 
+    @Override
+    public void visitCase(Tree.Case caseExpr) {
+	    // rule 1
+	    caseExpr.expr.accept(this);
+	    if (!caseExpr.expr.type.equals(BaseType.INT)) {
+	        issueError(new IncompatCaseError(caseExpr.expr.getLocation(), caseExpr.expr.type.toString(), BaseType.INT.toString()));
+        }
+
+        caseExpr.dExpr.accept(this);
+        Type defaultType = caseExpr.dExpr.type;
+        Type returnType = defaultType;
+	    HashSet<Object> leftSet = new HashSet<Object>();
+
+        for (Tree.Expr aCaseExpr : caseExpr.aExprs) {
+            if (aCaseExpr != null) {
+                aCaseExpr.accept(this);
+                Tree.Expr left = ((Tree.ACaseExpr)aCaseExpr).left;
+                Tree.Expr right = ((Tree.ACaseExpr)aCaseExpr).right;
+                if(!left.type.equal(BaseType.ERROR)) {
+                    Object leftValue = ((Tree.Literal)left).value;
+                    if (leftSet.contains(leftValue)) {
+                        issueError(new ConditionNotUniqueError(aCaseExpr.getLocation()));
+                        returnType = BaseType.ERROR;
+                    } else {
+                        leftSet.add(leftValue);
+                    }
+
+                    if(!(defaultType.equal(BaseType.ERROR)) && !(right.type.equal(defaultType))) {
+                        issueError(new DifferentTypeError(aCaseExpr.getLocation(), right.type.toString(), defaultType.toString()));
+                    }
+                }
+            }
+
+        }
+        caseExpr.type = returnType;
+    }
+
+    public void visitACaseExpr(Tree.ACaseExpr aCaseExpr) {
+	    aCaseExpr.left.accept(this);
+	    aCaseExpr.right.accept(this);
+	    if (!aCaseExpr.left.type.equal(BaseType.INT)) {
+            issueError(new IncompatCaseError(aCaseExpr.left.getLocation(), aCaseExpr.left.type.toString(), BaseType.INT.toString()));
+            aCaseExpr.left.type = BaseType.ERROR;
+        }
+	    if (aCaseExpr.left.type.equal(BaseType.ERROR) || aCaseExpr.right.type.equal(BaseType.ERROR)) {
+	        aCaseExpr.type = BaseType.ERROR;
+        }
+    }
+
+    @Override
+    public void visitDefaultExpr(Tree.DefaultExpr defaultExpr) {
+	    defaultExpr.expr.accept(this);
+	    defaultExpr.type = defaultExpr.expr.type;
+    }
+
+    @Override
+    public void visitDo(Tree.Do doLoop) {
+        //breaks.add(doLoop);
+        for (Tree branch : doLoop.branches) {
+            ((Tree.DoBranch)branch).sub.accept(this);
+        }
+        doLoop.sub.accept(this);
+        //breaks.pop();
+    }
+
+    @Override
+	public void visitDoBranch(Tree.DoBranch doBranch) {
+		doBranch.sub.accept(this);
+	}
+
+    @Override
+    public void visitDoSub(Tree.DoSub doSub) {
+	    doSub.expr.accept(this);
+	    breaks.add(doSub.stmt);
+	    doSub.stmt.accept(this);
+	    breaks.pop();
+	    if (!doSub.expr.type.equal(BaseType.BOOL) && !doSub.expr.type.equal(BaseType.ERROR)) {
+	        issueError(new DoSubNotBoolError(doSub.getLocation(), doSub.expr.type.toString()));
+        }
+    }
 }
