@@ -1520,6 +1520,7 @@ public abstract class Tree {
      * Super expression
      */
     public static class SuperExpr extends Expr {
+        public int depth = 1;
 
         public SuperExpr(Location loc) {
             super(SUPEREXPR, loc);

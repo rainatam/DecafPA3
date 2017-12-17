@@ -21,6 +21,8 @@ public class TransPass2 extends Tree.Visitor {
 
 	private Stack<Label> loopExits;
 
+	private Stack<Temp> superStack;
+
 	public TransPass2(Translater tr) {
 		this.tr = tr;
 		loopExits = new Stack<Label>();
@@ -301,8 +303,10 @@ public class TransPass2 extends Tree.Visitor {
 
 	@Override
 	public void visitSuperExpr(Tree.SuperExpr superExpr) {
-		Temp parent = tr.genLoad(currentThis, 0);
-		superExpr.val = parent;
+		Temp parent = tr.genLoad(superStack.peek(), 0);
+		superStack.push(parent);
+		superExpr.depth =
+		superExpr.val = currentThis;
 	}
 
 	@Override

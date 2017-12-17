@@ -29,7 +29,7 @@ public class LocalScope extends Scope {
 		return Kind.LOCAL;
 	}
 
-	@Override
+     	@Override
 	public void printTo(IndentPrintWriter pw) {
 		pw.println("LOCAL SCOPE:");
 		pw.incIndent();
