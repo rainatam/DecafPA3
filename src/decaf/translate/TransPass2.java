@@ -425,28 +425,45 @@ public class TransPass2 extends Tree.Visitor {
 		}
 	}
 
-	private int deepCopyClass(Tree.DCopyExpr dCopyExpr, Symbol classSymbol, int offset) {
+	private void deepCopyClass(Temp dst, Temp src, Symbol classSymbol) {
 		//System.out.println(classSymbol.getName() + classSymbol.getType().toString());
-
+		int size;
+		Boolean end = false;
 		Iterator<Symbol> iter = ((Class)classSymbol).getAssociatedScope().iterator();
+		Iterator<Symbol> next = ((Class)classSymbol).getAssociatedScope().iterator();
+		if (next.hasNext()) next.next();
 		while(iter.hasNext()) {
 			Symbol symbol = iter.next();
+			Symbol nextSymbol = symbol;
+			while(next.hasNext()) {
+				nextSymbol = next.next();
+
+				if (!next.hasNext()) {
+					end = true;
+				}
+				if(!nextSymbol.getType().isFuncType())
+					break;
+			}
+
+
 			if (symbol.getType().isClassType()) {
-				offset = deepCopyClass(dCopyExpr, ((ClassType)(symbol.getType())).getSymbol(), offset);
-			} else {
+				Temp newDst = tr.genDirectCall(((ClassType)(symbol.getType())).getSymbol().getNewFuncLabel(), BaseType.INT);
+				tr.genStore(newDst, dst, ((Variable)symbol).getOffset());
+				Temp newSrc = tr.genLoad(src, ((Variable)symbol).getOffset());
+				deepCopyClass(newDst, newSrc, ((ClassType)(symbol.getType())).getSymbol());
+			} else if(!symbol.getType().isFuncType()){
 				//System.out.println(symbol.getName() + " " + symbol.getType().toString() + symbol.isClass() + symbol.getType().isClassType());
-				Temp temp = tr.genLoad(dCopyExpr.expr.val, offset);
-				tr.genStore(temp, dCopyExpr.val, offset);
-				offset += 4;
-				if (symbol.getType() == BaseType.COMPLEX) {
-					temp = tr.genLoad(dCopyExpr.expr.val, offset);
-					tr.genStore(temp, dCopyExpr.val, offset);
-					offset += 4;
+				if (end)
+					size = ((Class) classSymbol).getSize();
+				else
+					size = ((Variable)nextSymbol).getOffset();
+				int offset = ((Variable)symbol).getOffset();
+				for (int i = offset; i < size; i += 4) {
+					Temp temp = tr.genLoad(src, i);
+					tr.genStore(temp, dst, i);
 				}
 			}
 		}
-
-		return offset;
 
 	}
 
@@ -456,8 +473,8 @@ public class TransPass2 extends Tree.Visitor {
 		dCopyExpr.expr.accept(this);
 		dCopyExpr.val = tr.genDirectCall(((ClassType)(dCopyExpr.expr.type)).getSymbol().getNewFuncLabel(), BaseType.INT);
 		//Iterator<Symbol> iterator = ((ClassType)(dCopyExpr.expr.type)).getSymbol().getAssociatedScope().iterator();
-		int offset = 0;
-		deepCopyClass(dCopyExpr, ((ClassType)(dCopyExpr.expr.type)).getSymbol(), offset);
+
+		deepCopyClass(dCopyExpr.val, dCopyExpr.expr.val, ((ClassType)(dCopyExpr.expr.type)).getSymbol());
 	}
 
 	@Override

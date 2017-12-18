@@ -1,7 +1,10 @@
-decaf.tacvm.exec.ExecuteException: memory access base = 0 offset = 20 out of bounds
-	at decaf.tacvm.exec.Memory.checkHeapAccess(Unknown Source)
-	at decaf.tacvm.exec.Memory.load(Unknown Source)
-	at decaf.tacvm.exec.Executor.exec(Unknown Source)
-	at decaf.tacvm.TacVM.run(Unknown Source)
-	at decaf.tacvm.TacVM.main(Unknown Source)
-***Error at (81,10), tac = _T29 = *(_T18 + 20): memory access base = 0 offset = 20 out of bounds
+a: 
+10
+89+8j
+100
+11
+b: 
+10
+89+8j
+99
+11
