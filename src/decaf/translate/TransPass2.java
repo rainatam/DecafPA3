@@ -1,10 +1,12 @@
 package decaf.translate;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 
 import com.sun.xml.internal.rngom.parse.host.Base;
+import decaf.symbol.Symbol;
 import decaf.tree.Tree;
 import decaf.backend.OffsetCounter;
 import decaf.machdesc.Intrinsic;
@@ -13,6 +15,7 @@ import decaf.tac.Label;
 import decaf.tac.Temp;
 import decaf.type.BaseType;
 import decaf.type.ClassType;
+import decaf.symbol.Class;
 
 public class TransPass2 extends Tree.Visitor {
 
@@ -422,12 +425,40 @@ public class TransPass2 extends Tree.Visitor {
 		}
 	}
 
-	/*
-	@Override
-	public void visitDCopy(Tree.DCopyExpr dCopyExpr) {
-		dCopyExpr.expr.accept(this);
+	private int deepCopyClass(Tree.DCopyExpr dCopyExpr, Symbol classSymbol, int offset) {
+		//System.out.println(classSymbol.getName() + classSymbol.getType().toString());
 
-	}*/
+		Iterator<Symbol> iter = ((Class)classSymbol).getAssociatedScope().iterator();
+		while(iter.hasNext()) {
+			Symbol symbol = iter.next();
+			if (symbol.getType().isClassType()) {
+				offset = deepCopyClass(dCopyExpr, ((ClassType)(symbol.getType())).getSymbol(), offset);
+			} else {
+				//System.out.println(symbol.getName() + " " + symbol.getType().toString() + symbol.isClass() + symbol.getType().isClassType());
+				Temp temp = tr.genLoad(dCopyExpr.expr.val, offset);
+				tr.genStore(temp, dCopyExpr.val, offset);
+				offset += 4;
+				if (symbol.getType() == BaseType.COMPLEX) {
+					temp = tr.genLoad(dCopyExpr.expr.val, offset);
+					tr.genStore(temp, dCopyExpr.val, offset);
+					offset += 4;
+				}
+			}
+		}
+
+		return offset;
+
+	}
+
+
+	@Override
+	public void visitDCopyExpr(Tree.DCopyExpr dCopyExpr) {
+		dCopyExpr.expr.accept(this);
+		dCopyExpr.val = tr.genDirectCall(((ClassType)(dCopyExpr.expr.type)).getSymbol().getNewFuncLabel(), BaseType.INT);
+		//Iterator<Symbol> iterator = ((ClassType)(dCopyExpr.expr.type)).getSymbol().getAssociatedScope().iterator();
+		int offset = 0;
+		deepCopyClass(dCopyExpr, ((ClassType)(dCopyExpr.expr.type)).getSymbol(), offset);
+	}
 
 	@Override
 	public void visitForLoop(Tree.ForLoop forLoop) {
