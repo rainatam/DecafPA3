@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import com.sun.xml.internal.rngom.parse.host.Base;
 import decaf.tree.Tree;
 import decaf.backend.OffsetCounter;
 import decaf.machdesc.Intrinsic;
@@ -21,7 +22,7 @@ public class TransPass2 extends Tree.Visitor {
 
 	private Stack<Label> loopExits;
 
-	private Stack<Temp> superStack;
+	private Temp vtable;
 
 	public TransPass2(Translater tr) {
 		this.tr = tr;
@@ -69,13 +70,59 @@ public class TransPass2 extends Tree.Visitor {
 		expr.right.accept(this);
 		switch (expr.tag) {
 		case Tree.PLUS:
-			expr.val = tr.genAdd(expr.left.val, expr.right.val);
+			if (expr.left.type.equal(BaseType.COMPLEX) || expr.right.type.equal(BaseType.COMPLEX)) {
+				Temp lReal, lImg, rReal, rImg;
+				if (expr.left.type.equal(BaseType.INT)) {
+					lReal = expr.left.val;
+					lImg = tr.genLoadImm4(0);
+				} else {
+					lReal = tr.genLoad(expr.left.val, 0);
+					lImg = tr.genLoad(expr.left.val, 4);
+				}
+				if (expr.right.type.equal(BaseType.INT)) {
+					rReal = expr.right.val;
+					rImg = tr.genLoadImm4(0);
+				} else {
+					rReal = tr.genLoad(expr.right.val, 0);
+					rImg = tr.genLoad(expr.right.val, 4);
+				}
+				Temp eight = tr.genLoadImm4(8);
+				tr.genParm(eight);
+				expr.val = tr.genIntrinsicCall(Intrinsic.ALLOCATE);
+				tr.genStore(tr.genAdd(lReal, rReal), expr.val, 0);
+				tr.genStore(tr.genAdd(lImg, rImg), expr.val, 4);
+			} else {
+				expr.val = tr.genAdd(expr.left.val, expr.right.val);
+			}
 			break;
 		case Tree.MINUS:
 			expr.val = tr.genSub(expr.left.val, expr.right.val);
 			break;
 		case Tree.MUL:
-			expr.val = tr.genMul(expr.left.val, expr.right.val);
+			if (expr.left.type.equal(BaseType.COMPLEX) || expr.right.type.equal(BaseType.COMPLEX)) {
+				Temp lReal, lImg, rReal, rImg;
+				if (expr.left.type.equal(BaseType.INT)) {
+					lReal = expr.left.val;
+					lImg = tr.genLoadImm4(0);
+				} else {
+					lReal = tr.genLoad(expr.left.val, 0);
+					lImg = tr.genLoad(expr.left.val, 4);
+				}
+				if (expr.right.type.equal(BaseType.INT)) {
+					rReal = expr.right.val;
+					rImg = tr.genLoadImm4(0);
+				} else {
+					rReal = tr.genLoad(expr.right.val, 0);
+					rImg = tr.genLoad(expr.right.val, 4);
+				}
+				Temp eight = tr.genLoadImm4(8);
+				tr.genParm(eight);
+				expr.val = tr.genIntrinsicCall(Intrinsic.ALLOCATE);
+				tr.genStore(tr.genSub(tr.genMul(lReal, rReal), tr.genMul(lImg, rImg)), expr.val, 0);
+				tr.genStore(tr.genSub(tr.genMul(lReal, rImg), tr.genMul(rReal, lImg)), expr.val, 4);
+			} else {
+				expr.val = tr.genMul(expr.left.val, expr.right.val);
+			}
 			break;
 		case Tree.DIV:
 			expr.val = tr.genDiv(expr.left.val, expr.right.val);
@@ -154,12 +201,25 @@ public class TransPass2 extends Tree.Visitor {
 	@Override
 	public void visitLiteral(Tree.Literal literal) {
 		switch (literal.typeTag) {
-		case Tree.INT:
-			literal.val = tr.genLoadImm4(((Integer)literal.value).intValue());
-			break;
-		case Tree.BOOL:
-			literal.val = tr.genLoadImm4((Boolean)(literal.value) ? 1 : 0);
-			break;
+			case Tree.INT:
+				literal.val = tr.genLoadImm4(((Integer)literal.value).intValue());
+				break;
+			case Tree.BOOL:
+				literal.val = tr.genLoadImm4((Boolean)(literal.value) ? 1 : 0);
+				break;
+			case Tree.COMPLEX:
+				String value = (String) literal.value;
+				String i = value.substring(0, value.length() - 1);
+				int img = Integer.decode(i);
+				int real = 0;
+				Temp realTemp = tr.genLoadImm4(real);
+				Temp imgTemp = tr.genLoadImm4(img);
+				Temp eight = tr.genLoadImm4(8);
+				tr.genParm(eight);
+				literal.val = tr.genIntrinsicCall(Intrinsic.ALLOCATE);
+				tr.genStore(realTemp, literal.val, 0);
+				tr.genStore(imgTemp, literal.val, 4);
+				break;
 		default:
 			literal.val = tr.genLoadStrConst((String)literal.value);
 		}
@@ -174,9 +234,23 @@ public class TransPass2 extends Tree.Visitor {
 	public void visitUnary(Tree.Unary expr) {
 		expr.expr.accept(this);
 		switch (expr.tag){
-		case Tree.NEG:
-			expr.val = tr.genNeg(expr.expr.val);
-			break;
+			case Tree.NEG:
+				expr.val = tr.genNeg(expr.expr.val);
+				break;
+			case Tree.RE:
+				expr.val = tr.genLoad(expr.expr.val, 0);
+				break;
+			case Tree.IM:
+				expr.val = tr.genLoad(expr.expr.val, 4);
+				break;
+			case Tree.COMPCAST:
+				Temp eight = tr.genLoadImm4(8);
+				Temp zero = tr.genLoadImm4(0);
+				tr.genParm(eight);
+				expr.val = tr.genIntrinsicCall(Intrinsic.ALLOCATE);
+				tr.genStore(expr.expr.val, expr.val, 0);
+				tr.genStore(zero, expr.val, 4);
+				break;
 		default:
 			expr.val = tr.genLNot(expr.expr.val);
 		}
@@ -232,6 +306,26 @@ public class TransPass2 extends Tree.Visitor {
 			} else if (r.type.equal(BaseType.STRING)) {
 				tr.genIntrinsicCall(Intrinsic.PRINT_STRING);
 			}
+		}
+	}
+
+	@Override
+	public void visitPrintComp(Tree.PrintComp printCompStmt) {
+		for (Tree expr : printCompStmt.exprs) {
+			expr.accept(this);
+			Temp real = tr.genLoad(expr.val, 0);
+			Temp img = tr.genLoad(expr.val, 4);
+			tr.genParm(real);
+			tr.genIntrinsicCall(Intrinsic.PRINT_INT);
+			Temp plus = tr.genLoadStrConst("+");
+			tr.genParm(plus);
+			tr.genIntrinsicCall(Intrinsic.PRINT_STRING);
+			tr.genParm(img);
+			tr.genIntrinsicCall(Intrinsic.PRINT_INT);
+			Temp j = tr.genLoadStrConst("j");
+			tr.genParm(j);
+			tr.genIntrinsicCall((Intrinsic.PRINT_STRING));
+
 		}
 	}
 
@@ -296,6 +390,9 @@ public class TransPass2 extends Tree.Visitor {
 				Temp func = tr.genLoad(vt, callExpr.symbol.getOffset());
 				callExpr.val = tr.genIndirectCall(func, callExpr.symbol
 						.getReturnType());
+				if (callExpr.receiver.tag == Tree.SUPEREXPR) {
+					tr.genStore(vtable, callExpr.receiver.val, 0);
+				}
 			}
 		}
 
@@ -303,37 +400,29 @@ public class TransPass2 extends Tree.Visitor {
 
 	@Override
 	public void visitSuperExpr(Tree.SuperExpr superExpr) {
-		Temp parent = tr.genLoad(superStack.peek(), 0);
-		superStack.push(parent);
-		superExpr.depth =
+		vtable = tr.genLoad(currentThis, 0);
+		Temp parent = tr.genLoad(vtable, 0);
+		tr.genStore(parent, currentThis, 0);
 		superExpr.val = currentThis;
 	}
 
 	@Override
 	public void visitSCopyExpr(Tree.SCopyExpr sCopyExpr) {
 		sCopyExpr.expr.accept(this);
-		int w = ((ClassType)(sCopyExpr.expr.type)).getSymbol().getSize();
-		Temp width = tr.genLoadImm4(w);
-		tr.genParm(width);
-		Temp dstAddr = tr.genIntrinsicCall(Intrinsic.ALLOCATE);
-		Label loop = Label.createLabel();
-		Temp four =  tr.genLoadImm4(4);
-		Temp offset = tr.genLoadImm4(0);
-		Temp srcAddr = Temp.createTempI4();
-		tr.genAssign(srcAddr, sCopyExpr.expr.val);
-		sCopyExpr.val = srcAddr;
-
-		tr.genMark(loop);
-
-		Temp temp = tr.genLoad(srcAddr, 0);
-		tr.genStore(temp, dstAddr, 0);
-		tr.genAssign(offset, tr.genAdd(offset, four));
-		tr.genAssign(dstAddr, tr.genAdd(dstAddr, four));
-		tr.genAssign(srcAddr, tr.genAdd(srcAddr, four));
-		tr.genAssign(temp, tr.genSub(width, offset));
-
-		tr.genBnez(temp, loop);
+		int width = ((ClassType)(sCopyExpr.expr.type)).getSymbol().getSize();
+		//Temp widthTemp = tr.genLoadImm4(width);
+		//tr.genParm(widthTemp);
+		//Temp dstAddr = tr.genIntrinsicCall(Intrinsic.ALLOCATE);
+		Temp dstAddr = tr.genDirectCall(((ClassType)(sCopyExpr.expr.type)).getSymbol().getNewFuncLabel(), BaseType.INT);
+		Temp srcAddr =  sCopyExpr.expr.val;
+		sCopyExpr.val = dstAddr;
+		for (int i = 0; i < width; i += 4) {
+			Temp temp = tr.genLoad(srcAddr, i);
+			tr.genStore(temp, dstAddr, i);
+		}
 	}
+
+
 
 	@Override
 	public void visitForLoop(Tree.ForLoop forLoop) {

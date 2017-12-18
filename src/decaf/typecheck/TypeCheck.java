@@ -716,14 +716,20 @@ public class TypeCheck extends Tree.Visitor {
                     (left.type.equals(BaseType.COMPLEX) && left.type.equal(right.type)) ||
                     (left.type.equals(BaseType.INT) && right.type.equals(BaseType.COMPLEX)) ||
                     (left.type.equals(BaseType.COMPLEX) && right.type.equals(BaseType.INT));
-            if(left.type.equals(BaseType.COMPLEX)) {
+			if (left.type.equal(BaseType.COMPLEX) || right.type.equal(BaseType.COMPLEX)) {
+				returnType = BaseType.COMPLEX;
+			} else {
+				returnType = left.type;
+			}
+            /*if(left.type.equals(BaseType.COMPLEX)) {
                 if(compatible) right.type = BaseType.COMPLEX;
                 returnType = BaseType.COMPLEX;
             } else if(right.type.equals(BaseType.COMPLEX)) {
                 if(compatible) left.type = BaseType.COMPLEX;
                 returnType = BaseType.COMPLEX;
             }
-            else  returnType = left.type;
+            else  returnType = left.type;*/
+
             break;
 		case Tree.MINUS:
 		case Tree.DIV:

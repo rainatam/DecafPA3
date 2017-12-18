@@ -67,151 +67,144 @@ main:
     _T22 = *(_T19 + 0)
     _T23 = *(_T22 + 16)
     call _T23
-    _T24 = 20
-    parm _T24
-    _T25 =  call _Alloc
-    _T26 = 4
-    _T27 = 0
-    _T28 = _T19
-_L17:
-    _T29 = *(_T28 + 0)
-    *(_T25 + 0) = _T29
-    _T30 = (_T27 + _T26)
-    _T27 = _T30
-    _T31 = (_T25 + _T26)
-    _T25 = _T31
-    _T32 = (_T28 + _T26)
-    _T28 = _T32
-    _T33 = (_T24 - _T27)
-    _T29 = _T33
-    if (_T29 != 0) branch _L17
-    _T20 = _T28
-    _T34 = 99
+    _T24 =  call _people_New
+    _T25 = *(_T19 + 0)
+    *(_T24 + 0) = _T25
+    _T26 = *(_T19 + 4)
+    *(_T24 + 4) = _T26
+    _T27 = *(_T19 + 8)
+    *(_T24 + 8) = _T27
+    _T28 = *(_T19 + 12)
+    *(_T24 + 12) = _T28
+    _T29 = *(_T19 + 16)
+    *(_T24 + 16) = _T29
+    _T20 = _T24
+    _T30 = 99
     parm _T20
-    parm _T34
-    _T35 = *(_T20 + 0)
-    _T36 = *(_T35 + 8)
-    call _T36
-    _T37 = "a: \n"
-    parm _T37
+    parm _T30
+    _T31 = *(_T20 + 0)
+    _T32 = *(_T31 + 8)
+    call _T32
+    _T33 = "a: \n"
+    parm _T33
     call _PrintString
     parm _T19
-    _T38 = *(_T19 + 0)
-    _T39 = *(_T38 + 12)
-    call _T39
-    _T40 = "b: \n"
-    parm _T40
+    _T34 = *(_T19 + 0)
+    _T35 = *(_T34 + 12)
+    call _T35
+    _T36 = "b: \n"
+    parm _T36
     call _PrintString
     parm _T20
-    _T41 = *(_T20 + 0)
-    _T42 = *(_T41 + 12)
-    call _T42
+    _T37 = *(_T20 + 0)
+    _T38 = *(_T37 + 12)
+    call _T38
 }
 
 FUNCTION(_animal.setage) {
 memo '_T0:4 _T1:8'
 _animal.setage:
-    _T43 = *(_T0 + 4)
+    _T39 = *(_T0 + 4)
     *(_T0 + 4) = _T1
 }
 
 FUNCTION(_animal.getage) {
 memo '_T2:4'
 _animal.getage:
-    _T44 = *(_T2 + 4)
-    parm _T44
+    _T40 = *(_T2 + 4)
+    parm _T40
     call _PrintInt
-    _T45 = "\n"
-    parm _T45
+    _T41 = "\n"
+    parm _T41
     call _PrintString
 }
 
 FUNCTION(_people.setaniage) {
 memo '_T3:4 _T4:8'
 _people.setaniage:
-    _T46 = *(_T3 + 12)
-    parm _T46
+    _T42 = *(_T3 + 12)
+    parm _T42
     parm _T4
-    _T47 = *(_T46 + 0)
-    _T48 = *(_T47 + 8)
-    call _T48
+    _T43 = *(_T42 + 0)
+    _T44 = *(_T43 + 8)
+    call _T44
 }
 
 FUNCTION(_people.getage) {
 memo '_T5:4'
 _people.getage:
-    _T49 = *(_T5 + 4)
-    parm _T49
+    _T45 = *(_T5 + 4)
+    parm _T45
     call _PrintInt
-    _T50 = "\n"
+    _T46 = "\n"
+    parm _T46
+    call _PrintString
+    _T47 = *(_T5 + 8)
+    _T48 = *(_T47 + 0)
+    _T49 = *(_T47 + 4)
+    parm _T48
+    call _PrintInt
+    _T50 = "+"
     parm _T50
     call _PrintString
-    _T51 = *(_T5 + 8)
-    _T52 = *(_T51 + 0)
-    _T53 = *(_T51 + 4)
+    parm _T49
+    call _PrintInt
+    _T51 = "j"
+    parm _T51
+    call _PrintString
+    _T52 = "\n"
     parm _T52
-    call _PrintInt
-    _T54 = "+"
-    parm _T54
     call _PrintString
+    _T53 = *(_T5 + 12)
     parm _T53
-    call _PrintInt
-    _T55 = "j"
-    parm _T55
-    call _PrintString
-    _T56 = "\n"
+    _T54 = *(_T53 + 0)
+    _T55 = *(_T54 + 12)
+    call _T55
+    _T56 = *(_T5 + 16)
     parm _T56
     call _PrintString
-    _T57 = *(_T5 + 12)
+    _T57 = "\n"
     parm _T57
-    _T58 = *(_T57 + 0)
-    _T59 = *(_T58 + 12)
-    call _T59
-    _T60 = *(_T5 + 16)
-    parm _T60
-    call _PrintString
-    _T61 = "\n"
-    parm _T61
     call _PrintString
 }
 
 FUNCTION(_people.setage) {
 memo '_T6:4'
 _people.setage:
-    _T62 = *(_T6 + 12)
-    _T63 =  call _animal_New
-    *(_T6 + 12) = _T63
-    _T64 = 100
+    _T58 = *(_T6 + 12)
+    _T59 =  call _animal_New
+    *(_T6 + 12) = _T59
+    _T60 = 100
     parm _T6
-    parm _T64
-    _T65 = *(_T6 + 0)
-    _T66 = *(_T65 + 8)
-    call _T66
-    _T67 = *(_T6 + 4)
-    _T68 = 10
-    *(_T6 + 4) = _T68
-    _T69 = *(_T6 + 16)
-    _T70 = "11"
-    *(_T6 + 16) = _T70
-    _T71 = *(_T6 + 8)
-    _T72 = 89
+    parm _T60
+    _T61 = *(_T6 + 0)
+    _T62 = *(_T61 + 8)
+    call _T62
+    _T63 = *(_T6 + 4)
+    _T64 = 10
+    *(_T6 + 4) = _T64
+    _T65 = *(_T6 + 16)
+    _T66 = "11"
+    *(_T6 + 16) = _T66
+    _T67 = *(_T6 + 8)
+    _T68 = 89
+    _T69 = 0
+    _T70 = 8
+    _T71 = 8
+    parm _T71
+    _T72 =  call _Alloc
+    *(_T72 + 0) = _T69
+    *(_T72 + 4) = _T70
     _T73 = 0
-    _T74 = 8
-    _T75 = 8
-    parm _T75
-    _T76 =  call _Alloc
-    *(_T76 + 0) = _T73
-    *(_T76 + 4) = _T74
-    _T77 = 0
-    _T78 = *(_T76 + 0)
-    _T79 = *(_T76 + 4)
-    _T80 = 8
-    parm _T80
-    _T81 =  call _Alloc
-    _T82 = (_T72 + _T78)
-    *(_T81 + 0) = _T82
-    _T83 = (_T77 + _T79)
-    *(_T81 + 4) = _T83
-    *(_T6 + 8) = _T81
+    _T74 = *(_T72 + 0)
+    _T75 = *(_T72 + 4)
+    _T76 = 8
+    parm _T76
+    _T77 =  call _Alloc
+    _T78 = (_T68 + _T74)
+    *(_T77 + 0) = _T78
+    _T79 = (_T73 + _T75)
+    *(_T77 + 4) = _T79
+    *(_T6 + 8) = _T77
 }
 
