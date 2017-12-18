@@ -27,30 +27,31 @@ main:
     _T10 = (_T3 * _T9)
     _T12 = 0
     _T13 = (_T10 - _T12)
-    if (_T13 == 0) branch _L11
+    if (_T13 == 0) branch _L12
     _T14 = 3
     _T15 = (_T10 - _T14)
-    if (_T15 == 0) branch _L12
+    if (_T15 == 0) branch _L13
     _T16 = 6
     _T17 = (_T10 - _T16)
-    if (_T17 == 0) branch _L13
-_L11:
+    if (_T17 == 0) branch _L14
+    branch _L11
+_L12:
     _T18 = (_T5 + _T6)
     _T11 = _T18
     branch _L10
-_L12:
+_L13:
     _T19 = 3
     _T20 = (_T5 + _T19)
     _T11 = _T20
     branch _L10
-_L13:
+_L14:
     _T21 = 2
     _T22 = (_T6 * _T21)
     _T23 = 6
     _T24 = (_T22 + _T23)
     _T11 = _T24
     branch _L10
-_L14:
+_L11:
     _T25 = 100
     _T11 = _T25
 _L10:

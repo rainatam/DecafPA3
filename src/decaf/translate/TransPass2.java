@@ -422,7 +422,12 @@ public class TransPass2 extends Tree.Visitor {
 		}
 	}
 
+	/*
+	@Override
+	public void visitDCopy(Tree.DCopyExpr dCopyExpr) {
+		dCopyExpr.expr.accept(this);
 
+	}*/
 
 	@Override
 	public void visitForLoop(Tree.ForLoop forLoop) {
@@ -475,6 +480,7 @@ public class TransPass2 extends Tree.Visitor {
 	public void visitCase(Tree.Case caseExpr) {
 		caseExpr.expr.accept(this);
 		Label exit = Label.createLabel();
+		Label defaultLabel = Label.createLabel();
 		List<Label> labelList = new ArrayList<>();
 		caseExpr.val = Temp.createTempI4();
 		for (Tree.Expr aCaseExpr : caseExpr.aExprs) {
@@ -484,13 +490,14 @@ public class TransPass2 extends Tree.Visitor {
 			labelList.add(caseLabel);
 			tr.genBeqz(val, caseLabel);
 		}
+		tr.genBranch(defaultLabel);
 		for (int i = 0; i < caseExpr.aExprs.size(); i++) {
 			tr.genMark(labelList.get(i));
 			((Tree.ACaseExpr)caseExpr.aExprs.get(i)).right.accept(this);
 			tr.genAssign(caseExpr.val, ((Tree.ACaseExpr) caseExpr.aExprs.get(i)).right.val);
 			tr.genBranch(exit);
 		}
-		Label defaultLabel = Label.createLabel();
+
 		tr.genMark(defaultLabel);
 		caseExpr.dExpr.accept(this);
 		tr.genAssign(caseExpr.val, caseExpr.dExpr.val);

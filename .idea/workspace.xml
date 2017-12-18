@@ -2,23 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="82b18dc5-ecfe-43e7-8940-b3c89ce4d4e7" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result/bin/decaf/translate/TransPass2$1.class" afterPath="$PROJECT_DIR$/result/bin/decaf/translate/TransPass2$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result/bin/decaf/translate/TransPass2.class" afterPath="$PROJECT_DIR$/result/bin/decaf/translate/TransPass2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result/bin/decaf/tree/Tree$DCopyExpr.class" afterPath="$PROJECT_DIR$/result/bin/decaf/tree/Tree$DCopyExpr.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result/bin/decaf/tree/Tree$Do.class" afterPath="$PROJECT_DIR$/result/bin/decaf/tree/Tree$Do.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result/bin/decaf/tree/Tree$DoBranch.class" afterPath="$PROJECT_DIR$/result/bin/decaf/tree/Tree$DoBranch.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result/bin/decaf/tree/Tree$DoSub.class" afterPath="$PROJECT_DIR$/result/bin/decaf/tree/Tree$DoSub.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result/bin/decaf/tree/Tree$SCopyExpr.class" afterPath="$PROJECT_DIR$/result/bin/decaf/tree/Tree$SCopyExpr.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result/bin/decaf/tree/Tree$SuperExpr.class" afterPath="$PROJECT_DIR$/result/bin/decaf/tree/Tree$SuperExpr.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result/bin/decaf/tree/Tree$Visitor.class" afterPath="$PROJECT_DIR$/result/bin/decaf/tree/Tree$Visitor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result/bin/decaf/typecheck/TypeCheck.class" afterPath="$PROJECT_DIR$/result/bin/decaf/typecheck/TypeCheck.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result/decaf.jar" afterPath="$PROJECT_DIR$/result/decaf.jar" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TestCases/S3/output/q4-copy-test1.result" afterPath="$PROJECT_DIR$/TestCases/S3/output/q4-copy-test1.result" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TestCases/S3/output/q4-copy-test1.tac" afterPath="$PROJECT_DIR$/TestCases/S3/output/q4-copy-test1.tac" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TestCases/S3/output/q2-case-test1.tac" afterPath="$PROJECT_DIR$/TestCases/S3/output/q2-case-test1.tac" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TestCases/S3/output/q2-case-test2.result" afterPath="$PROJECT_DIR$/TestCases/S3/output/q2-case-test2.result" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TestCases/S3/output/q2-case-test2.tac" afterPath="$PROJECT_DIR$/TestCases/S3/output/q2-case-test2.tac" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/decaf/frontend/Lexer.java" afterPath="$PROJECT_DIR$/src/decaf/frontend/Lexer.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/decaf/translate/TransPass2.java" afterPath="$PROJECT_DIR$/src/decaf/translate/TransPass2.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/decaf/typecheck/TypeCheck.java" afterPath="$PROJECT_DIR$/src/decaf/typecheck/TypeCheck.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -35,11 +26,10 @@
           <file leaf-file-name="TransPass2.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/decaf/translate/TransPass2.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="261">
-                  <caret line="417" column="8" lean-forward="false" selection-start-line="417" selection-start-column="8" selection-end-line="417" selection-end-column="8" />
+                <state relative-caret-position="102">
+                  <caret line="424" column="6" lean-forward="false" selection-start-line="424" selection-start-column="6" selection-end-line="424" selection-end-column="6" />
                   <folding>
                     <element signature="imports" expanded="true" />
-                    <element signature="method#visitCase#0;class#TransPass2#0" expanded="false" />
                   </folding>
                 </state>
               </provider>
@@ -465,15 +455,16 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1513410000648</updated>
-      <workItem from="1513410004746" duration="40374000" />
+      <workItem from="1513410004746" duration="41275000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="40374000" />
+    <option name="totallyTimeSpent" value="41275000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="727" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -491,7 +482,7 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12358643" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.09612278" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.09612278" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -541,7 +532,15 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="3" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/decaf/translate/TransPass2.java</url>
+          <line>480</line>
+          <properties />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="4" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -745,11 +744,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/decaf/translate/TransPass2.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="261">
-          <caret line="417" column="8" lean-forward="false" selection-start-line="417" selection-start-column="8" selection-end-line="417" selection-end-column="8" />
+        <state relative-caret-position="102">
+          <caret line="424" column="6" lean-forward="false" selection-start-line="424" selection-start-column="6" selection-end-line="424" selection-end-column="6" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#visitCase#0;class#TransPass2#0" expanded="false" />
           </folding>
         </state>
       </provider>
