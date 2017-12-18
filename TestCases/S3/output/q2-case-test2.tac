@@ -198,40 +198,74 @@ _L34:
     _T94 = 100
     _T80 = _T94
 _L30:
-    _T95 = ! _T80
-    _T7 = _T95
-    _T96 = "\n"
-    parm _T96
+    _T95 = 8
+    _T96 = 0
+    parm _T95
+    _T97 =  call _Alloc
+    *(_T97 + 0) = _T80
+    *(_T97 + 4) = _T96
+    _T7 = _T97
+    _T98 = *(_T7 + 0)
+    _T99 = *(_T7 + 4)
+    parm _T98
+    call _PrintInt
+    _T100 = "+"
+    parm _T100
     call _PrintString
-    _T98 = 8
-    _T99 = (_T3 - _T98)
-    if (_T99 == 0) branch _L36
-    _T100 = 3
-    _T101 = (_T3 - _T100)
-    if (_T101 == 0) branch _L37
-    _T102 = 0
-    _T103 = (_T3 - _T102)
-    if (_T103 == 0) branch _L38
+    parm _T99
+    call _PrintInt
+    _T101 = "j"
+    parm _T101
+    call _PrintString
+    _T102 = "\n"
+    parm _T102
+    call _PrintString
+    _T104 = 8
+    _T105 = (_T3 - _T104)
+    if (_T105 == 0) branch _L36
+    _T106 = 3
+    _T107 = (_T3 - _T106)
+    if (_T107 == 0) branch _L37
+    _T108 = 0
+    _T109 = (_T3 - _T108)
+    if (_T109 == 0) branch _L38
 _L36:
-    _T104 = (_T4 + _T5)
-    _T97 = _T104
+    _T110 = (_T4 + _T5)
+    _T103 = _T110
     branch _L35
 _L37:
-    _T105 = (_T4 + _T3)
-    _T97 = _T105
+    _T111 = (_T4 + _T3)
+    _T103 = _T111
     branch _L35
 _L38:
-    _T106 = 8
-    _T97 = _T106
+    _T112 = 8
+    _T103 = _T112
     branch _L35
 _L39:
-    _T107 = 100
-    _T97 = _T107
+    _T113 = 100
+    _T103 = _T113
 _L35:
-    _T108 = ! _T97
-    _T7 = _T108
-    _T109 = "\n"
-    parm _T109
+    _T114 = 8
+    _T115 = 0
+    parm _T114
+    _T116 =  call _Alloc
+    *(_T116 + 0) = _T103
+    *(_T116 + 4) = _T115
+    _T7 = _T116
+    _T117 = *(_T7 + 0)
+    _T118 = *(_T7 + 4)
+    parm _T117
+    call _PrintInt
+    _T119 = "+"
+    parm _T119
+    call _PrintString
+    parm _T118
+    call _PrintInt
+    _T120 = "j"
+    parm _T120
+    call _PrintString
+    _T121 = "\n"
+    parm _T121
     call _PrintString
 }
 

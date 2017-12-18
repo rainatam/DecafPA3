@@ -78,13 +78,16 @@ FUNCTION(_Mac.add) {
 memo '_T2:4 _T3:8'
 _Mac.add:
     _T23 = *(_T2 + 0)
-    parm _T23
-    parm _T3
     _T24 = *(_T23 + 0)
-    _T25 = *(_T24 + 8)
-    call _T25
-    _T26 = "ack!"
-    parm _T26
+    *(_T2 + 0) = _T24
+    parm _T2
+    parm _T3
+    _T25 = *(_T2 + 0)
+    _T26 = *(_T25 + 8)
+    call _T26
+    *(_T2 + 0) = _T23
+    _T27 = "ack!"
+    parm _T27
     call _PrintString
 }
 
@@ -93,24 +96,24 @@ memo '_T4:4 _T5:8'
 _Mac.Crash:
     parm _T4
     parm _T5
-    _T27 = *(_T4 + 0)
-    _T28 = *(_T27 + 12)
-    call _T28
-    _T29 = "ack!"
-    parm _T29
+    _T28 = *(_T4 + 0)
+    _T29 = *(_T28 + 12)
+    call _T29
+    _T30 = "ack!"
+    parm _T30
     call _PrintString
 }
 
 FUNCTION(main) {
 memo ''
 main:
-    _T31 =  call _Mac_New
-    _T30 = _T31
-    _T32 = 2
-    parm _T30
-    parm _T32
-    _T33 = *(_T30 + 0)
-    _T34 = *(_T33 + 8)
-    call _T34
+    _T32 =  call _Mac_New
+    _T31 = _T32
+    _T33 = 2
+    parm _T31
+    parm _T33
+    _T34 = *(_T31 + 0)
+    _T35 = *(_T34 + 8)
+    call _T35
 }
 

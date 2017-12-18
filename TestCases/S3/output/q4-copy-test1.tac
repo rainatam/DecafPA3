@@ -146,44 +146,72 @@ _people.getage:
     _T50 = "\n"
     parm _T50
     call _PrintString
-    _T51 = "\n"
-    parm _T51
-    call _PrintString
-    _T52 = *(_T5 + 12)
+    _T51 = *(_T5 + 8)
+    _T52 = *(_T51 + 0)
+    _T53 = *(_T51 + 4)
     parm _T52
-    _T53 = *(_T52 + 0)
-    _T54 = *(_T53 + 12)
-    call _T54
-    _T55 = *(_T5 + 16)
+    call _PrintInt
+    _T54 = "+"
+    parm _T54
+    call _PrintString
+    parm _T53
+    call _PrintInt
+    _T55 = "j"
     parm _T55
     call _PrintString
     _T56 = "\n"
     parm _T56
+    call _PrintString
+    _T57 = *(_T5 + 12)
+    parm _T57
+    _T58 = *(_T57 + 0)
+    _T59 = *(_T58 + 12)
+    call _T59
+    _T60 = *(_T5 + 16)
+    parm _T60
+    call _PrintString
+    _T61 = "\n"
+    parm _T61
     call _PrintString
 }
 
 FUNCTION(_people.setage) {
 memo '_T6:4'
 _people.setage:
-    _T57 = *(_T6 + 12)
-    _T58 =  call _animal_New
-    *(_T6 + 12) = _T58
-    _T59 = 100
+    _T62 = *(_T6 + 12)
+    _T63 =  call _animal_New
+    *(_T6 + 12) = _T63
+    _T64 = 100
     parm _T6
-    parm _T59
-    _T60 = *(_T6 + 0)
-    _T61 = *(_T60 + 8)
-    call _T61
-    _T62 = *(_T6 + 4)
-    _T63 = 10
-    *(_T6 + 4) = _T63
-    _T64 = *(_T6 + 16)
-    _T65 = "11"
-    *(_T6 + 16) = _T65
-    _T66 = *(_T6 + 8)
-    _T67 = 89
-    _T68 = "8j"
-    _T69 = (_T67 + _T68)
-    *(_T6 + 8) = _T69
+    parm _T64
+    _T65 = *(_T6 + 0)
+    _T66 = *(_T65 + 8)
+    call _T66
+    _T67 = *(_T6 + 4)
+    _T68 = 10
+    *(_T6 + 4) = _T68
+    _T69 = *(_T6 + 16)
+    _T70 = "11"
+    *(_T6 + 16) = _T70
+    _T71 = *(_T6 + 8)
+    _T72 = 89
+    _T73 = 0
+    _T74 = 8
+    _T75 = 8
+    parm _T75
+    _T76 =  call _Alloc
+    *(_T76 + 0) = _T73
+    *(_T76 + 4) = _T74
+    _T77 = 0
+    _T78 = *(_T76 + 0)
+    _T79 = *(_T76 + 4)
+    _T80 = 8
+    parm _T80
+    _T81 =  call _Alloc
+    _T82 = (_T72 + _T78)
+    *(_T81 + 0) = _T82
+    _T83 = (_T77 + _T79)
+    *(_T81 + 4) = _T83
+    *(_T6 + 8) = _T81
 }
 

@@ -312,62 +312,68 @@ FUNCTION(_B.allprint) {
 memo '_T10:4'
 _B.allprint:
     _T107 = *(_T10 + 0)
-    parm _T107
     _T108 = *(_T107 + 0)
-    _T109 = *(_T108 + 16)
-    call _T109
+    *(_T10 + 0) = _T108
     parm _T10
-    _T110 = *(_T10 + 0)
-    _T111 = *(_T110 + 12)
-    call _T111
+    _T109 = *(_T10 + 0)
+    _T110 = *(_T109 + 16)
+    call _T110
+    *(_T10 + 0) = _T107
+    parm _T10
+    _T111 = *(_T10 + 0)
+    _T112 = *(_T111 + 12)
+    call _T112
 }
 
 FUNCTION(_B.fun) {
 memo '_T11:4'
 _B.fun:
-    _T112 = "B"
-    parm _T112
-    call _PrintString
-    _T113 = *(_T11 + 0)
+    _T113 = "B"
     parm _T113
-    _T114 = *(_T113 + 0)
-    _T115 = *(_T114 + 16)
-    call _T115
+    call _PrintString
+    _T114 = *(_T11 + 0)
+    _T115 = *(_T114 + 0)
+    *(_T11 + 0) = _T115
     parm _T11
     _T116 = *(_T11 + 0)
-    _T117 = *(_T116 + 12)
+    _T117 = *(_T116 + 16)
     call _T117
-    _T118 = "\n"
-    parm _T118
+    *(_T11 + 0) = _T114
+    parm _T11
+    _T118 = *(_T11 + 0)
+    _T119 = *(_T118 + 12)
+    call _T119
+    _T120 = "\n"
+    parm _T120
     call _PrintString
 }
 
 FUNCTION(_C.setC) {
 memo '_T12:4 _T13:8 _T14:12'
 _C.setC:
-    _T119 = *(_T12 + 12)
+    _T121 = *(_T12 + 12)
     *(_T12 + 12) = _T13
-    _T120 = *(_T12 + 16)
+    _T122 = *(_T12 + 16)
     *(_T12 + 16) = _T14
 }
 
 FUNCTION(_C.print) {
 memo '_T15:4'
 _C.print:
-    _T121 = " c="
-    parm _T121
-    call _PrintString
-    _T122 = *(_T15 + 12)
-    parm _T122
-    call _PrintInt
-    _T123 = " c1="
+    _T123 = " c="
     parm _T123
     call _PrintString
-    _T124 = *(_T15 + 16)
+    _T124 = *(_T15 + 12)
     parm _T124
     call _PrintInt
-    _T125 = " "
+    _T125 = " c1="
     parm _T125
+    call _PrintString
+    _T126 = *(_T15 + 16)
+    parm _T126
+    call _PrintInt
+    _T127 = " "
+    parm _T127
     call _PrintString
 }
 
@@ -375,443 +381,464 @@ FUNCTION(_C.allprint) {
 memo '_T16:4'
 _C.allprint:
     parm _T16
-    _T126 = *(_T16 + 0)
-    _T127 = *(_T126 + 12)
-    call _T127
+    _T128 = *(_T16 + 0)
+    _T129 = *(_T128 + 12)
+    call _T129
 }
 
 FUNCTION(_C.fun) {
 memo '_T17:4'
 _C.fun:
-    _T128 = "C"
-    parm _T128
+    _T130 = "C"
+    parm _T130
     call _PrintString
-    _T129 = *(_T17 + 0)
-    parm _T129
-    _T130 = *(_T129 + 0)
-    _T131 = *(_T130 + 16)
-    call _T131
+    _T131 = *(_T17 + 0)
+    _T132 = *(_T131 + 0)
+    *(_T17 + 0) = _T132
     parm _T17
-    _T132 = *(_T17 + 0)
-    _T133 = *(_T132 + 12)
-    call _T133
-    _T134 = "\n"
-    parm _T134
+    _T133 = *(_T17 + 0)
+    _T134 = *(_T133 + 16)
+    call _T134
+    *(_T17 + 0) = _T131
+    parm _T17
+    _T135 = *(_T17 + 0)
+    _T136 = *(_T135 + 12)
+    call _T136
+    _T137 = "\n"
+    parm _T137
     call _PrintString
 }
 
 FUNCTION(_D.setD) {
 memo '_T18:4 _T19:8 _T20:12'
 _D.setD:
-    _T135 = *(_T18 + 20)
+    _T138 = *(_T18 + 20)
     *(_T18 + 20) = _T19
-    _T136 = *(_T18 + 24)
+    _T139 = *(_T18 + 24)
     *(_T18 + 24) = _T20
 }
 
 FUNCTION(_D.print) {
 memo '_T21:4'
 _D.print:
-    _T137 = " d="
-    parm _T137
-    call _PrintString
-    _T138 = *(_T21 + 20)
-    parm _T138
-    call _PrintInt
-    _T139 = " d1="
-    parm _T139
-    call _PrintString
-    _T140 = *(_T21 + 24)
+    _T140 = " d="
     parm _T140
-    call _PrintInt
-    _T141 = " "
+    call _PrintString
+    _T141 = *(_T21 + 20)
     parm _T141
+    call _PrintInt
+    _T142 = " d1="
+    parm _T142
+    call _PrintString
+    _T143 = *(_T21 + 24)
+    parm _T143
+    call _PrintInt
+    _T144 = " "
+    parm _T144
     call _PrintString
 }
 
 FUNCTION(_D.allprint) {
 memo '_T22:4'
 _D.allprint:
-    _T142 = *(_T22 + 0)
-    parm _T142
-    _T143 = *(_T142 + 0)
-    _T144 = *(_T143 + 16)
-    call _T144
-    parm _T22
     _T145 = *(_T22 + 0)
-    _T146 = *(_T145 + 12)
-    call _T146
+    _T146 = *(_T145 + 0)
+    *(_T22 + 0) = _T146
+    parm _T22
+    _T147 = *(_T22 + 0)
+    _T148 = *(_T147 + 16)
+    call _T148
+    *(_T22 + 0) = _T145
+    parm _T22
+    _T149 = *(_T22 + 0)
+    _T150 = *(_T149 + 12)
+    call _T150
 }
 
 FUNCTION(_D.fun) {
 memo '_T23:4'
 _D.fun:
-    _T147 = "D"
-    parm _T147
+    _T151 = "D"
+    parm _T151
     call _PrintString
-    _T148 = *(_T23 + 0)
-    parm _T148
-    _T149 = *(_T148 + 0)
-    _T150 = *(_T149 + 16)
-    call _T150
+    _T152 = *(_T23 + 0)
+    _T153 = *(_T152 + 0)
+    *(_T23 + 0) = _T153
     parm _T23
-    _T151 = *(_T23 + 0)
-    _T152 = *(_T151 + 12)
-    call _T152
-    _T153 = "\n"
-    parm _T153
+    _T154 = *(_T23 + 0)
+    _T155 = *(_T154 + 16)
+    call _T155
+    *(_T23 + 0) = _T152
+    parm _T23
+    _T156 = *(_T23 + 0)
+    _T157 = *(_T156 + 12)
+    call _T157
+    _T158 = "\n"
+    parm _T158
     call _PrintString
 }
 
 FUNCTION(_E.setE) {
 memo '_T24:4 _T25:8 _T26:12'
 _E.setE:
-    _T154 = *(_T24 + 20)
+    _T159 = *(_T24 + 20)
     *(_T24 + 20) = _T25
-    _T155 = *(_T24 + 24)
+    _T160 = *(_T24 + 24)
     *(_T24 + 24) = _T26
 }
 
 FUNCTION(_E.print) {
 memo '_T27:4'
 _E.print:
-    _T156 = " e="
-    parm _T156
+    _T161 = " e="
+    parm _T161
     call _PrintString
-    _T157 = *(_T27 + 20)
-    parm _T157
+    _T162 = *(_T27 + 20)
+    parm _T162
     call _PrintInt
-    _T158 = " e1="
-    parm _T158
+    _T163 = " e1="
+    parm _T163
     call _PrintString
-    _T159 = *(_T27 + 24)
-    parm _T159
+    _T164 = *(_T27 + 24)
+    parm _T164
     call _PrintInt
-    _T160 = " "
-    parm _T160
+    _T165 = " "
+    parm _T165
     call _PrintString
 }
 
 FUNCTION(_E.fun) {
 memo '_T28:4'
 _E.fun:
-    _T161 = "E"
-    parm _T161
+    _T166 = "E"
+    parm _T166
     call _PrintString
     parm _T28
-    _T162 = *(_T28 + 0)
-    _T163 = *(_T162 + 16)
-    call _T163
+    _T167 = *(_T28 + 0)
+    _T168 = *(_T167 + 16)
+    call _T168
     parm _T28
-    _T164 = *(_T28 + 0)
-    _T165 = *(_T164 + 12)
-    call _T165
-    _T166 = "\n"
-    parm _T166
+    _T169 = *(_T28 + 0)
+    _T170 = *(_T169 + 12)
+    call _T170
+    _T171 = "\n"
+    parm _T171
     call _PrintString
 }
 
 FUNCTION(_F.setF) {
 memo '_T29:4 _T30:8 _T31:12'
 _F.setF:
-    _T167 = *(_T29 + 28)
+    _T172 = *(_T29 + 28)
     *(_T29 + 28) = _T30
-    _T168 = *(_T29 + 32)
+    _T173 = *(_T29 + 32)
     *(_T29 + 32) = _T31
 }
 
 FUNCTION(_F.print) {
 memo '_T32:4'
 _F.print:
-    _T169 = " f="
-    parm _T169
+    _T174 = " f="
+    parm _T174
     call _PrintString
-    _T170 = *(_T32 + 28)
-    parm _T170
+    _T175 = *(_T32 + 28)
+    parm _T175
     call _PrintInt
-    _T171 = " f1="
-    parm _T171
+    _T176 = " f1="
+    parm _T176
     call _PrintString
-    _T172 = *(_T32 + 32)
-    parm _T172
+    _T177 = *(_T32 + 32)
+    parm _T177
     call _PrintInt
-    _T173 = " "
-    parm _T173
+    _T178 = " "
+    parm _T178
     call _PrintString
 }
 
 FUNCTION(_F.allprint) {
 memo '_T33:4'
 _F.allprint:
-    _T174 = *(_T33 + 0)
-    parm _T174
-    _T175 = *(_T174 + 0)
-    _T176 = *(_T175 + 16)
-    call _T176
+    _T179 = *(_T33 + 0)
+    _T180 = *(_T179 + 0)
+    *(_T33 + 0) = _T180
     parm _T33
-    _T177 = *(_T33 + 0)
-    _T178 = *(_T177 + 12)
-    call _T178
+    _T181 = *(_T33 + 0)
+    _T182 = *(_T181 + 16)
+    call _T182
+    *(_T33 + 0) = _T179
+    parm _T33
+    _T183 = *(_T33 + 0)
+    _T184 = *(_T183 + 12)
+    call _T184
 }
 
 FUNCTION(_F.fun) {
 memo '_T34:4'
 _F.fun:
-    _T179 = "F"
-    parm _T179
-    call _PrintString
-    _T180 = *(_T34 + 0)
-    parm _T180
-    _T181 = *(_T180 + 0)
-    _T182 = *(_T181 + 16)
-    call _T182
-    parm _T34
-    _T183 = *(_T34 + 0)
-    _T184 = *(_T183 + 12)
-    call _T184
-    _T185 = "\n"
+    _T185 = "F"
     parm _T185
+    call _PrintString
+    _T186 = *(_T34 + 0)
+    _T187 = *(_T186 + 0)
+    *(_T34 + 0) = _T187
+    parm _T34
+    _T188 = *(_T34 + 0)
+    _T189 = *(_T188 + 16)
+    call _T189
+    *(_T34 + 0) = _T186
+    parm _T34
+    _T190 = *(_T34 + 0)
+    _T191 = *(_T190 + 12)
+    call _T191
+    _T192 = "\n"
+    parm _T192
     call _PrintString
 }
 
 FUNCTION(_G.setG) {
 memo '_T35:4 _T36:8'
 _G.setG:
-    _T186 = *(_T35 + 20)
+    _T193 = *(_T35 + 20)
     *(_T35 + 20) = _T36
 }
 
 FUNCTION(_G.print) {
 memo '_T37:4'
 _G.print:
-    _T187 = " g="
-    parm _T187
+    _T194 = " g="
+    parm _T194
     call _PrintString
-    _T188 = *(_T37 + 20)
-    parm _T188
+    _T195 = *(_T37 + 20)
+    parm _T195
     call _PrintInt
 }
 
 FUNCTION(_G.allprint) {
 memo '_T38:4'
 _G.allprint:
-    _T189 = *(_T38 + 0)
-    parm _T189
-    _T190 = *(_T189 + 0)
-    _T191 = *(_T190 + 16)
-    call _T191
+    _T196 = *(_T38 + 0)
+    _T197 = *(_T196 + 0)
+    *(_T38 + 0) = _T197
     parm _T38
-    _T192 = *(_T38 + 0)
-    _T193 = *(_T192 + 12)
-    call _T193
+    _T198 = *(_T38 + 0)
+    _T199 = *(_T198 + 16)
+    call _T199
+    *(_T38 + 0) = _T196
+    parm _T38
+    _T200 = *(_T38 + 0)
+    _T201 = *(_T200 + 12)
+    call _T201
 }
 
 FUNCTION(_G.fun) {
 memo '_T39:4'
 _G.fun:
-    _T194 = "G"
-    parm _T194
+    _T202 = "G"
+    parm _T202
     call _PrintString
-    _T195 = *(_T39 + 0)
-    parm _T195
-    _T196 = *(_T195 + 0)
-    _T197 = *(_T196 + 16)
-    call _T197
+    _T203 = *(_T39 + 0)
+    _T204 = *(_T203 + 0)
+    *(_T39 + 0) = _T204
     parm _T39
-    _T198 = *(_T39 + 0)
-    _T199 = *(_T198 + 12)
-    call _T199
-    _T200 = "\n"
-    parm _T200
+    _T205 = *(_T39 + 0)
+    _T206 = *(_T205 + 16)
+    call _T206
+    *(_T39 + 0) = _T203
+    parm _T39
+    _T207 = *(_T39 + 0)
+    _T208 = *(_T207 + 12)
+    call _T208
+    _T209 = "\n"
+    parm _T209
     call _PrintString
 }
 
 FUNCTION(main) {
 memo ''
 main:
-    _T208 =  call _A_New
-    _T201 = _T208
-    _T209 =  call _B_New
-    _T202 = _T209
-    _T210 =  call _C_New
-    _T203 = _T210
-    _T211 =  call _D_New
-    _T204 = _T211
-    _T212 =  call _E_New
-    _T205 = _T212
-    _T213 =  call _F_New
-    _T206 = _T213
-    _T214 =  call _G_New
-    _T207 = _T214
-    _T215 = 10
-    _T216 = 11
-    parm _T201
-    parm _T215
-    parm _T216
-    _T217 = *(_T201 + 0)
-    _T218 = *(_T217 + 8)
-    call _T218
-    _T219 = 20
-    _T220 = 21
-    parm _T202
-    parm _T219
-    parm _T220
-    _T221 = *(_T202 + 0)
-    _T222 = *(_T221 + 8)
-    call _T222
-    _T223 = 22
-    _T224 = 23
-    parm _T202
-    parm _T223
+    _T217 =  call _A_New
+    _T210 = _T217
+    _T218 =  call _B_New
+    _T211 = _T218
+    _T219 =  call _C_New
+    _T212 = _T219
+    _T220 =  call _D_New
+    _T213 = _T220
+    _T221 =  call _E_New
+    _T214 = _T221
+    _T222 =  call _F_New
+    _T215 = _T222
+    _T223 =  call _G_New
+    _T216 = _T223
+    _T224 = 10
+    _T225 = 11
+    parm _T210
     parm _T224
-    _T225 = *(_T202 + 0)
-    _T226 = *(_T225 + 24)
-    call _T226
-    _T227 = 30
-    _T228 = 31
-    parm _T203
-    parm _T227
+    parm _T225
+    _T226 = *(_T210 + 0)
+    _T227 = *(_T226 + 8)
+    call _T227
+    _T228 = 20
+    _T229 = 21
+    parm _T211
     parm _T228
-    _T229 = *(_T203 + 0)
-    _T230 = *(_T229 + 8)
-    call _T230
-    _T231 = 32
-    _T232 = 33
-    parm _T203
-    parm _T231
+    parm _T229
+    _T230 = *(_T211 + 0)
+    _T231 = *(_T230 + 8)
+    call _T231
+    _T232 = 22
+    _T233 = 23
+    parm _T211
     parm _T232
-    _T233 = *(_T203 + 0)
-    _T234 = *(_T233 + 24)
-    call _T234
-    _T235 = 40
-    _T236 = 41
-    parm _T204
-    parm _T235
+    parm _T233
+    _T234 = *(_T211 + 0)
+    _T235 = *(_T234 + 24)
+    call _T235
+    _T236 = 30
+    _T237 = 31
+    parm _T212
     parm _T236
-    _T237 = *(_T204 + 0)
-    _T238 = *(_T237 + 8)
-    call _T238
-    _T239 = 42
-    _T240 = 43
-    parm _T204
-    parm _T239
+    parm _T237
+    _T238 = *(_T212 + 0)
+    _T239 = *(_T238 + 8)
+    call _T239
+    _T240 = 32
+    _T241 = 33
+    parm _T212
     parm _T240
-    _T241 = *(_T204 + 0)
-    _T242 = *(_T241 + 24)
-    call _T242
-    _T243 = 44
-    _T244 = 45
-    parm _T204
-    parm _T243
+    parm _T241
+    _T242 = *(_T212 + 0)
+    _T243 = *(_T242 + 24)
+    call _T243
+    _T244 = 40
+    _T245 = 41
+    parm _T213
     parm _T244
-    _T245 = *(_T204 + 0)
-    _T246 = *(_T245 + 28)
-    call _T246
-    _T247 = 50
-    _T248 = 51
-    parm _T205
-    parm _T247
+    parm _T245
+    _T246 = *(_T213 + 0)
+    _T247 = *(_T246 + 8)
+    call _T247
+    _T248 = 42
+    _T249 = 43
+    parm _T213
     parm _T248
-    _T249 = *(_T205 + 0)
-    _T250 = *(_T249 + 8)
-    call _T250
-    _T251 = 52
-    _T252 = 53
-    parm _T205
-    parm _T251
+    parm _T249
+    _T250 = *(_T213 + 0)
+    _T251 = *(_T250 + 24)
+    call _T251
+    _T252 = 44
+    _T253 = 45
+    parm _T213
     parm _T252
-    _T253 = *(_T205 + 0)
-    _T254 = *(_T253 + 24)
-    call _T254
-    _T255 = 54
-    _T256 = 55
-    parm _T205
-    parm _T255
+    parm _T253
+    _T254 = *(_T213 + 0)
+    _T255 = *(_T254 + 28)
+    call _T255
+    _T256 = 50
+    _T257 = 51
+    parm _T214
     parm _T256
-    _T257 = *(_T205 + 0)
-    _T258 = *(_T257 + 28)
-    call _T258
-    _T259 = 60
-    _T260 = 61
-    parm _T206
-    parm _T259
+    parm _T257
+    _T258 = *(_T214 + 0)
+    _T259 = *(_T258 + 8)
+    call _T259
+    _T260 = 52
+    _T261 = 53
+    parm _T214
     parm _T260
-    _T261 = *(_T206 + 0)
-    _T262 = *(_T261 + 8)
-    call _T262
-    _T263 = 62
-    _T264 = 63
-    parm _T206
-    parm _T263
+    parm _T261
+    _T262 = *(_T214 + 0)
+    _T263 = *(_T262 + 24)
+    call _T263
+    _T264 = 54
+    _T265 = 55
+    parm _T214
     parm _T264
-    _T265 = *(_T206 + 0)
-    _T266 = *(_T265 + 24)
-    call _T266
-    _T267 = 64
-    _T268 = 65
-    parm _T206
-    parm _T267
+    parm _T265
+    _T266 = *(_T214 + 0)
+    _T267 = *(_T266 + 28)
+    call _T267
+    _T268 = 60
+    _T269 = 61
+    parm _T215
     parm _T268
-    _T269 = *(_T206 + 0)
-    _T270 = *(_T269 + 28)
-    call _T270
-    _T271 = 66
-    _T272 = 67
-    parm _T206
-    parm _T271
+    parm _T269
+    _T270 = *(_T215 + 0)
+    _T271 = *(_T270 + 8)
+    call _T271
+    _T272 = 62
+    _T273 = 63
+    parm _T215
     parm _T272
-    _T273 = *(_T206 + 0)
-    _T274 = *(_T273 + 32)
-    call _T274
-    _T275 = 70
-    _T276 = 71
-    parm _T207
-    parm _T275
+    parm _T273
+    _T274 = *(_T215 + 0)
+    _T275 = *(_T274 + 24)
+    call _T275
+    _T276 = 64
+    _T277 = 65
+    parm _T215
     parm _T276
-    _T277 = *(_T207 + 0)
-    _T278 = *(_T277 + 8)
-    call _T278
-    _T279 = 72
-    _T280 = 73
-    parm _T207
-    parm _T279
+    parm _T277
+    _T278 = *(_T215 + 0)
+    _T279 = *(_T278 + 28)
+    call _T279
+    _T280 = 66
+    _T281 = 67
+    parm _T215
     parm _T280
-    _T281 = *(_T207 + 0)
-    _T282 = *(_T281 + 24)
-    call _T282
-    _T283 = 74
-    parm _T207
-    parm _T283
-    _T284 = *(_T207 + 0)
-    _T285 = *(_T284 + 28)
-    call _T285
-    parm _T201
-    _T286 = *(_T201 + 0)
-    _T287 = *(_T286 + 20)
+    parm _T281
+    _T282 = *(_T215 + 0)
+    _T283 = *(_T282 + 32)
+    call _T283
+    _T284 = 70
+    _T285 = 71
+    parm _T216
+    parm _T284
+    parm _T285
+    _T286 = *(_T216 + 0)
+    _T287 = *(_T286 + 8)
     call _T287
-    parm _T202
-    _T288 = *(_T202 + 0)
-    _T289 = *(_T288 + 20)
-    call _T289
-    parm _T203
-    _T290 = *(_T203 + 0)
-    _T291 = *(_T290 + 20)
+    _T288 = 72
+    _T289 = 73
+    parm _T216
+    parm _T288
+    parm _T289
+    _T290 = *(_T216 + 0)
+    _T291 = *(_T290 + 24)
     call _T291
-    parm _T204
-    _T292 = *(_T204 + 0)
-    _T293 = *(_T292 + 20)
-    call _T293
-    parm _T205
-    _T294 = *(_T205 + 0)
-    _T295 = *(_T294 + 20)
-    call _T295
-    parm _T206
-    _T296 = *(_T206 + 0)
-    _T297 = *(_T296 + 20)
-    call _T297
-    parm _T207
-    _T298 = *(_T207 + 0)
-    _T299 = *(_T298 + 20)
-    call _T299
+    _T292 = 74
+    parm _T216
+    parm _T292
+    _T293 = *(_T216 + 0)
+    _T294 = *(_T293 + 28)
+    call _T294
+    parm _T210
+    _T295 = *(_T210 + 0)
+    _T296 = *(_T295 + 20)
+    call _T296
+    parm _T211
+    _T297 = *(_T211 + 0)
+    _T298 = *(_T297 + 20)
+    call _T298
+    parm _T212
+    _T299 = *(_T212 + 0)
+    _T300 = *(_T299 + 20)
+    call _T300
+    parm _T213
+    _T301 = *(_T213 + 0)
+    _T302 = *(_T301 + 20)
+    call _T302
+    parm _T214
+    _T303 = *(_T214 + 0)
+    _T304 = *(_T303 + 20)
+    call _T304
+    parm _T215
+    _T305 = *(_T215 + 0)
+    _T306 = *(_T305 + 20)
+    call _T306
+    parm _T216
+    _T307 = *(_T216 + 0)
+    _T308 = *(_T307 + 20)
+    call _T308
 }
 

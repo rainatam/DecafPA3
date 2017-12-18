@@ -52,24 +52,52 @@ _Mac.Crash:
     _T15 = "\n"
     parm _T15
     call _PrintString
+    _T16 = *(_T0 + 4)
+    _T17 = *(_T16 + 0)
+    _T18 = *(_T16 + 4)
+    parm _T17
+    call _PrintInt
+    _T19 = "+"
+    parm _T19
+    call _PrintString
+    parm _T18
+    call _PrintInt
+    _T20 = "j"
+    parm _T20
+    call _PrintString
 }
 
 FUNCTION(main) {
 memo ''
 main:
-    _T17 =  call _Mac_New
-    _T16 = _T17
-    _T18 = 2
-    _T19 = 3
-    _T20 = "4j"
-    _T21 = (_T19 + _T20)
-    _T22 = 5
-    parm _T16
-    parm _T18
+    _T22 =  call _Mac_New
+    _T21 = _T22
+    _T23 = 2
+    _T24 = 3
+    _T25 = 0
+    _T26 = 4
+    _T27 = 8
+    parm _T27
+    _T28 =  call _Alloc
+    *(_T28 + 0) = _T25
+    *(_T28 + 4) = _T26
+    _T29 = 0
+    _T30 = *(_T28 + 0)
+    _T31 = *(_T28 + 4)
+    _T32 = 8
+    parm _T32
+    _T33 =  call _Alloc
+    _T34 = (_T24 + _T30)
+    *(_T33 + 0) = _T34
+    _T35 = (_T29 + _T31)
+    *(_T33 + 4) = _T35
+    _T36 = 5
     parm _T21
-    parm _T22
-    _T23 = *(_T16 + 0)
-    _T24 = *(_T23 + 8)
-    call _T24
+    parm _T23
+    parm _T33
+    parm _T36
+    _T37 = *(_T21 + 0)
+    _T38 = *(_T37 + 8)
+    call _T38
 }
 
