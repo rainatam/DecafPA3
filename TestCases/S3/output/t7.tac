@@ -89,7 +89,7 @@ main:
     _T24 = 2
     parm _T22
     parm _T24
-    _T25 = *(_T22 + 0)
+    _T25 = VTBL <_Mac>
     _T26 = *(_T25 + 8)
     call _T26
 }

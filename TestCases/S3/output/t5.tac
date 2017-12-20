@@ -71,11 +71,11 @@ main:
     parm _T17
     parm _T19
     parm _T20
-    _T21 = *(_T17 + 0)
+    _T21 = VTBL <_Cow>
     _T22 = *(_T21 + 8)
     call _T22
     parm _T17
-    _T23 = *(_T17 + 0)
+    _T23 = VTBL <_Cow>
     _T24 = *(_T23 + 12)
     call _T24
 }

@@ -403,13 +403,14 @@ public class TransPass2 extends Tree.Visitor {
 						callExpr.symbol.getFuncty().label, callExpr.symbol
 								.getReturnType());
 			} else {
-				Temp vt = tr.genLoad(callExpr.receiver.val, 0);
+				Temp vt;
+				if (callExpr.receiver.tag == Tree.SUPEREXPR)
+					vt = tr.genLoadVTable(((ClassType)(callExpr.receiver.type)).getParentType().getSymbol().getVtable());
+				else
+					vt = tr.genLoadVTable(((ClassType)(callExpr.receiver.type)).getSymbol().getVtable());
 				Temp func = tr.genLoad(vt, callExpr.symbol.getOffset());
 				callExpr.val = tr.genIndirectCall(func, callExpr.symbol
 						.getReturnType());
-				if (callExpr.receiver.tag == Tree.SUPEREXPR) {
-					tr.genStore(vtable, callExpr.receiver.val, 0);
-				}
 			}
 		}
 
@@ -417,9 +418,6 @@ public class TransPass2 extends Tree.Visitor {
 
 	@Override
 	public void visitSuperExpr(Tree.SuperExpr superExpr) {
-		vtable = tr.genLoad(currentThis, 0);
-		Temp parent = tr.genLoad(vtable, 0);
-		tr.genStore(parent, currentThis, 0);
 		superExpr.val = currentThis;
 	}
 

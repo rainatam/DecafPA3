@@ -92,7 +92,7 @@ _Cow.InitCow:
     parm _T5
     parm _T6
     parm _T7
-    _T26 = *(_T5 + 0)
+    _T26 = VTBL <_Cow>
     _T27 = *(_T26 + 8)
     call _T27
 }
@@ -116,19 +116,19 @@ main:
     parm _T32
     parm _T33
     parm _T34
-    _T35 = *(_T29 + 0)
+    _T35 = VTBL <_Cow>
     _T36 = *(_T35 + 20)
     call _T36
     _T30 = _T29
     parm _T30
-    _T37 = *(_T30 + 0)
+    _T37 = VTBL <_Animal>
     _T38 = *(_T37 + 16)
     _T39 =  call _T38
     _T40 = "spots: "
     parm _T40
     call _PrintString
     parm _T29
-    _T41 = *(_T29 + 0)
+    _T41 = VTBL <_Cow>
     _T42 = *(_T41 + 24)
     _T43 =  call _T42
     parm _T43
@@ -137,7 +137,7 @@ main:
     parm _T44
     call _PrintString
     parm _T30
-    _T45 = *(_T30 + 0)
+    _T45 = VTBL <_Animal>
     _T46 = *(_T45 + 12)
     _T47 =  call _T46
     parm _T47

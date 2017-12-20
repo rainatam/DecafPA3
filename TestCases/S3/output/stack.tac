@@ -72,7 +72,7 @@ _L18:
     _T24 = 3
     parm _T0
     parm _T24
-    _T25 = *(_T0 + 0)
+    _T25 = VTBL <_Stack>
     _T26 = *(_T25 + 12)
     call _T26
 }
@@ -154,29 +154,29 @@ _Stack.main:
     _T65 =  call _Stack_New
     _T64 = _T65
     parm _T64
-    _T66 = *(_T64 + 0)
+    _T66 = VTBL <_Stack>
     _T67 = *(_T66 + 8)
     call _T67
     _T68 = 3
     parm _T64
     parm _T68
-    _T69 = *(_T64 + 0)
+    _T69 = VTBL <_Stack>
     _T70 = *(_T69 + 12)
     call _T70
     _T71 = 7
     parm _T64
     parm _T71
-    _T72 = *(_T64 + 0)
+    _T72 = VTBL <_Stack>
     _T73 = *(_T72 + 12)
     call _T73
     _T74 = 4
     parm _T64
     parm _T74
-    _T75 = *(_T64 + 0)
+    _T75 = VTBL <_Stack>
     _T76 = *(_T75 + 12)
     call _T76
     parm _T64
-    _T77 = *(_T64 + 0)
+    _T77 = VTBL <_Stack>
     _T78 = *(_T77 + 20)
     _T79 =  call _T78
     parm _T79
@@ -185,7 +185,7 @@ _Stack.main:
     parm _T80
     call _PrintString
     parm _T64
-    _T81 = *(_T64 + 0)
+    _T81 = VTBL <_Stack>
     _T82 = *(_T81 + 16)
     _T83 =  call _T82
     parm _T83
@@ -194,7 +194,7 @@ _Stack.main:
     parm _T84
     call _PrintString
     parm _T64
-    _T85 = *(_T64 + 0)
+    _T85 = VTBL <_Stack>
     _T86 = *(_T85 + 16)
     _T87 =  call _T86
     parm _T87
@@ -203,7 +203,7 @@ _Stack.main:
     parm _T88
     call _PrintString
     parm _T64
-    _T89 = *(_T64 + 0)
+    _T89 = VTBL <_Stack>
     _T90 = *(_T89 + 16)
     _T91 =  call _T90
     parm _T91
@@ -212,7 +212,7 @@ _Stack.main:
     parm _T92
     call _PrintString
     parm _T64
-    _T93 = *(_T64 + 0)
+    _T93 = VTBL <_Stack>
     _T94 = *(_T93 + 20)
     _T95 =  call _T94
     parm _T95

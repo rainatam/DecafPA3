@@ -126,7 +126,7 @@ _Queue.Init:
     parm _T39
     parm _T40
     parm _T41
-    _T42 = *(_T38 + 0)
+    _T42 = VTBL <_QueueItem>
     _T43 = *(_T42 + 8)
     call _T43
 }
@@ -138,7 +138,7 @@ _Queue.EnQueue:
     _T44 = _T45
     _T46 = *(_T12 + 8)
     parm _T46
-    _T47 = *(_T46 + 0)
+    _T47 = VTBL <_QueueItem>
     _T48 = *(_T47 + 16)
     _T49 =  call _T48
     _T50 = *(_T12 + 8)
@@ -146,7 +146,7 @@ _Queue.EnQueue:
     parm _T13
     parm _T49
     parm _T50
-    _T51 = *(_T44 + 0)
+    _T51 = VTBL <_QueueItem>
     _T52 = *(_T51 + 8)
     call _T52
 }
@@ -156,7 +156,7 @@ memo '_T14:4'
 _Queue.DeQueue:
     _T54 = *(_T14 + 8)
     parm _T54
-    _T55 = *(_T54 + 0)
+    _T55 = VTBL <_QueueItem>
     _T56 = *(_T55 + 20)
     _T57 =  call _T56
     _T58 = *(_T14 + 8)
@@ -171,39 +171,39 @@ _Queue.DeQueue:
 _L21:
     _T63 = *(_T14 + 8)
     parm _T63
-    _T64 = *(_T63 + 0)
+    _T64 = VTBL <_QueueItem>
     _T65 = *(_T64 + 20)
     _T66 =  call _T65
     _T62 = _T66
     parm _T62
-    _T67 = *(_T62 + 0)
+    _T67 = VTBL <_QueueItem>
     _T68 = *(_T67 + 12)
     _T69 =  call _T68
     _T53 = _T69
     parm _T62
-    _T70 = *(_T62 + 0)
+    _T70 = VTBL <_QueueItem>
     _T71 = *(_T70 + 20)
     _T72 =  call _T71
     parm _T62
-    _T73 = *(_T62 + 0)
+    _T73 = VTBL <_QueueItem>
     _T74 = *(_T73 + 16)
     _T75 =  call _T74
     parm _T72
     parm _T75
-    _T76 = *(_T72 + 0)
+    _T76 = VTBL <_QueueItem>
     _T77 = *(_T76 + 24)
     call _T77
     parm _T62
-    _T78 = *(_T62 + 0)
+    _T78 = VTBL <_QueueItem>
     _T79 = *(_T78 + 16)
     _T80 =  call _T79
     parm _T62
-    _T81 = *(_T62 + 0)
+    _T81 = VTBL <_QueueItem>
     _T82 = *(_T81 + 20)
     _T83 =  call _T82
     parm _T80
     parm _T83
-    _T84 = *(_T80 + 0)
+    _T84 = VTBL <_QueueItem>
     _T85 = *(_T84 + 28)
     call _T85
 _L22:
@@ -216,7 +216,7 @@ main:
     _T88 =  call _Queue_New
     _T86 = _T88
     parm _T86
-    _T89 = *(_T86 + 0)
+    _T89 = VTBL <_Queue>
     _T90 = *(_T89 + 8)
     call _T90
     _T91 = 0
@@ -232,7 +232,7 @@ _L23:
     if (_T95 == 0) branch _L25
     parm _T86
     parm _T87
-    _T96 = *(_T86 + 0)
+    _T96 = VTBL <_Queue>
     _T97 = *(_T96 + 12)
     call _T97
     branch _L24
@@ -249,7 +249,7 @@ _L26:
     _T102 = (_T87 < _T101)
     if (_T102 == 0) branch _L28
     parm _T86
-    _T103 = *(_T86 + 0)
+    _T103 = VTBL <_Queue>
     _T104 = *(_T103 + 16)
     _T105 =  call _T104
     parm _T105
@@ -275,7 +275,7 @@ _L29:
     if (_T112 == 0) branch _L31
     parm _T86
     parm _T87
-    _T113 = *(_T86 + 0)
+    _T113 = VTBL <_Queue>
     _T114 = *(_T113 + 12)
     call _T114
     branch _L30
@@ -292,7 +292,7 @@ _L32:
     _T119 = (_T87 < _T118)
     if (_T119 == 0) branch _L34
     parm _T86
-    _T120 = *(_T86 + 0)
+    _T120 = VTBL <_Queue>
     _T121 = *(_T120 + 16)
     _T122 =  call _T121
     parm _T122

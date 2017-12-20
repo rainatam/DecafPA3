@@ -25,7 +25,7 @@ main:
     _T8 = - _T7
     parm _T6
     parm _T8
-    _T9 = *(_T6 + 0)
+    _T9 = VTBL <_Main>
     _T10 = *(_T9 + 8)
     call _T10
 }

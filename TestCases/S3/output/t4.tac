@@ -96,7 +96,7 @@ _L20:
     if (_T35 == 0) branch _L21
     parm _T2
     parm _T25
-    _T36 = *(_T2 + 0)
+    _T36 = VTBL <_Main>
     _T37 = *(_T36 + 8)
     _T38 =  call _T37
     _T27 = _T38
@@ -188,7 +188,7 @@ memo ''
 main:
     _T79 =  call _Main_New
     parm _T79
-    _T80 = *(_T79 + 0)
+    _T80 = VTBL <_Main>
     _T81 = *(_T80 + 12)
     call _T81
 }

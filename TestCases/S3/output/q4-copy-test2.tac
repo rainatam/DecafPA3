@@ -64,7 +64,7 @@ main:
     _T20 =  call _people_New
     _T18 = _T20
     parm _T18
-    _T21 = *(_T18 + 0)
+    _T21 = VTBL <_people>
     _T22 = *(_T21 + 16)
     call _T22
     _T23 =  call _people_New
@@ -83,21 +83,21 @@ main:
     _T30 = 99
     parm _T19
     parm _T30
-    _T31 = *(_T19 + 0)
+    _T31 = VTBL <_people>
     _T32 = *(_T31 + 8)
     call _T32
     _T33 = "a: \n"
     parm _T33
     call _PrintString
     parm _T18
-    _T34 = *(_T18 + 0)
+    _T34 = VTBL <_people>
     _T35 = *(_T34 + 12)
     call _T35
     _T36 = "b: \n"
     parm _T36
     call _PrintString
     parm _T19
-    _T37 = *(_T19 + 0)
+    _T37 = VTBL <_people>
     _T38 = *(_T37 + 12)
     call _T38
 }
@@ -126,7 +126,7 @@ _people.setaniage:
     _T42 = *(_T3 + 12)
     parm _T42
     parm _T4
-    _T43 = *(_T42 + 0)
+    _T43 = VTBL <_animal>
     _T44 = *(_T43 + 8)
     call _T44
 }
@@ -158,7 +158,7 @@ _people.getage:
     call _PrintString
     _T53 = *(_T5 + 12)
     parm _T53
-    _T54 = *(_T53 + 0)
+    _T54 = VTBL <_animal>
     _T55 = *(_T54 + 12)
     call _T55
     _T56 = *(_T5 + 16)
@@ -178,7 +178,7 @@ _people.setage:
     _T60 = 100
     parm _T6
     parm _T60
-    _T61 = *(_T6 + 0)
+    _T61 = VTBL <_people>
     _T62 = *(_T61 + 8)
     call _T62
     _T63 = *(_T6 + 4)
