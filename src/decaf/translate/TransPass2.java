@@ -128,9 +128,23 @@ public class TransPass2 extends Tree.Visitor {
 			}
 			break;
 		case Tree.DIV:
+			Label nohalt = Label.createLabel();
+			tr.genBnez(expr.right.val, nohalt);
+			Temp tmp = tr.genLoadStrConst("Decaf runtime error: Division by zero error.\n");
+			tr.genParm(tmp);
+			tr.genIntrinsicCall(Intrinsic.PRINT_STRING);
+			tr.genIntrinsicCall(Intrinsic.HALT);
+			tr.genMark(nohalt);
 			expr.val = tr.genDiv(expr.left.val, expr.right.val);
 			break;
 		case Tree.MOD:
+			nohalt = Label.createLabel();
+			tr.genBnez(expr.right.val, nohalt);
+			tmp = tr.genLoadStrConst("Decaf runtime error: Division by zero error.\n");
+			tr.genParm(tmp);
+			tr.genIntrinsicCall(Intrinsic.PRINT_STRING);
+			tr.genIntrinsicCall(Intrinsic.HALT);
+			tr.genMark(nohalt);
 			expr.val = tr.genMod(expr.left.val, expr.right.val);
 			break;
 		case Tree.AND:
@@ -413,9 +427,6 @@ public class TransPass2 extends Tree.Visitor {
 	public void visitSCopyExpr(Tree.SCopyExpr sCopyExpr) {
 		sCopyExpr.expr.accept(this);
 		int width = ((ClassType)(sCopyExpr.expr.type)).getSymbol().getSize();
-		//Temp widthTemp = tr.genLoadImm4(width);
-		//tr.genParm(widthTemp);
-		//Temp dstAddr = tr.genIntrinsicCall(Intrinsic.ALLOCATE);
 		Temp dstAddr = tr.genDirectCall(((ClassType)(sCopyExpr.expr.type)).getSymbol().getNewFuncLabel(), BaseType.INT);
 		Temp srcAddr =  sCopyExpr.expr.val;
 		sCopyExpr.val = dstAddr;
@@ -437,15 +448,12 @@ public class TransPass2 extends Tree.Visitor {
 			Symbol nextSymbol = symbol;
 			while(next.hasNext()) {
 				nextSymbol = next.next();
-
 				if (!next.hasNext()) {
 					end = true;
 				}
 				if(!nextSymbol.getType().isFuncType())
 					break;
 			}
-
-
 			if (symbol.getType().isClassType()) {
 				Temp newDst = tr.genDirectCall(((ClassType)(symbol.getType())).getSymbol().getNewFuncLabel(), BaseType.INT);
 				tr.genStore(newDst, dst, ((Variable)symbol).getOffset());
@@ -464,7 +472,6 @@ public class TransPass2 extends Tree.Visitor {
 				}
 			}
 		}
-
 	}
 
 
@@ -472,8 +479,6 @@ public class TransPass2 extends Tree.Visitor {
 	public void visitDCopyExpr(Tree.DCopyExpr dCopyExpr) {
 		dCopyExpr.expr.accept(this);
 		dCopyExpr.val = tr.genDirectCall(((ClassType)(dCopyExpr.expr.type)).getSymbol().getNewFuncLabel(), BaseType.INT);
-		//Iterator<Symbol> iterator = ((ClassType)(dCopyExpr.expr.type)).getSymbol().getAssociatedScope().iterator();
-
 		deepCopyClass(dCopyExpr.val, dCopyExpr.expr.val, ((ClassType)(dCopyExpr.expr.type)).getSymbol());
 	}
 
